@@ -28,8 +28,8 @@ var testData = {
 
 var testDataUpdate = function(){
 	return {gravy: {
-			pigeon:{max:150,value:(Math.floor(Math.random()*100))}
-			rat:{max:150,value:(Math.floor(Math.random()*100))}
+			pigeon:{max:150,value:(Math.floor(Math.random()*100))},
+			rat:{max:150,value:(Math.floor(Math.random()*100))},
 			kangaroo:{max:150,value:(Math.floor(Math.random()*100))}
 		}
 	};
@@ -37,12 +37,46 @@ var testDataUpdate = function(){
 
 
 $(function(){
-	for (var i in testData)
-		ml.newObject(i,testData[i]).appendTo('body');
+	ml.refresh(testData);
 
-	ml.sort();
+	setInterval(function(){
+		ml.update(testDataUpdate());
+	},600);
+
 });
 
+// initially (re)construct the objects, given a full state
+ml.refresh = function(state){
+	var context = $('body').empty();
+
+	state = ml.addIds(state);
+
+	for (var ob in state)
+		ml.addObject(ob,state[ob],context);
+
+	ml.sort();
+}
+
+// update the DOM with the new delta-state, where anything can be omitted
+// if unchanged
+ml.update = function(state){
+	state = ml.addIds(state);
+
+	for (var ob in state)
+		for (var attr in state[ob])
+			ml.updateAttribute(state[ob][attr]);
+}
+
+// adds an unique ID to each attribute, allowing the attribute to be linked to
+// the DOM so that it can be easily updated
+ml.addIds = function(state){
+	// objects
+	for (var ob in state)
+		for (var attr in state[ob])
+			state[ob][attr].id = $.md5(ob+attr);
+
+	return state;
+}
 
 // re-arranges objects by height so that they display using as much
 // of the screen as possible
@@ -52,48 +86,58 @@ ml.sort = function(){
 	}).appendTo('body');
 }
 
-// returns a new object containing attributes given an object of attributes
-ml.newObject = function(name,attrs){
-	var ob = $('<div class="object" />');
+// adds an object containing attributes given an object of attributes to DOM
+// (body)
+ml.addObject = function(name,attrs,context){
+	var ob = $('<div class="object" />').appendTo(context);
 	$('<h1 />').appendTo(ob).text(name);
 
 	var table = $('<table />').appendTo(ob);
 
 	for (var i in attrs)
-		ml.newAttribute(i,attrs[i]).appendTo(table);
-
-	return ob;
+		ml.addAttribute(i,attrs[i],table);
 }
 
 // updates attribute row with changes from delta object given
-// expected <tr /> jquery object or selector
+// requires attr with id added by ml.getId()
 // merges with previously known data object
-ml.updateAttribute = function(tr,state){
-	// ensure tr is *one* jquery object. Otherwise
-	// values get mixed up badly.
-	tr = $(tr).first();
+ml.updateAttribute = function(attr){
+	if (!attr.id)
+		console.error('No ID found in attr. Use ml.addIDs()',attr);
 
-	// compute new state based on old+delta
-	var prev = tr.data('state');
-	if (prev) state = $.extend({},prev,state);
+	// find the attribute table row using id
+	var tr = $('#'+attr.id);
 
-	// save new state
-	tr.data('state',state);
+	// compute new attr based on old+delta
+	var prev = tr.data('attr');
+	if (prev) attr = $.extend({},prev,attr);
+
+	// save new attr
+	tr.data('attr',attr);
 
 	// update each field
-	$('.value',tr).html(state.value+state.units);
-	$('.bar',tr).magicBar(state);
-	$('.min',tr).html(state.min+state.units);
-	$('.max',tr).html(state.max+state.units);
+	$('.value',tr).html(attr.value+attr.units);
+	$('.bar',tr).magicBar(attr);
+	$('.min',tr).html(attr.min+attr.units);
+	$('.max',tr).html(attr.max+attr.units);
 }
 
-// return a jquery table row of a new attribute
-ml.newAttribute = function(name,state){
-	// merge initial state with anydefaults
-	state = $.extend({},ml.defaults,state);
+// add a new attribute row to given table
+ml.addAttribute = function(name,attr,table){
+	if (!attr.id)
+		console.error('No ID found in attr. Use ml.addIDs()',attr);
+
+	// merge initial attr with anydefaults
+	attr = $.extend({},ml.defaults,attr);
 
 	var tr = $('<tr><th></th><td class="value"></td><td class="min limit"></td><td class="bar"></td><td class="max limit"></td></tr>');
+
+	// assign the unique DOM ID so the element can be updated easily
+	tr.attr('id',attr.id);
+
 	$('th',tr).text(name);
-	ml.updateAttribute(tr,state);
-	return tr;
+
+	// add to table, THEN update it (must be on DOM)
+	tr.appendTo(table);
+	ml.updateAttribute(attr);
 }
