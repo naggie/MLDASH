@@ -1,5 +1,13 @@
 //var app = require('express').createServer()
-var io = require('socket.io').listen(8080);
+var express = require('express');
+var app = express.createServer();
+var io = require('socket.io').listen(app);
+
+
+app.listen(80);
+app.use(
+	express.static(__dirname + '/www')
+);
 
 io.set('log level',1);
 

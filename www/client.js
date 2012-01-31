@@ -17,7 +17,7 @@ ml.defaults = {
 }
 
 $(function(){
-	var socket = io.connect('http://localhost:8080');
+	var socket = io.connect();
 	$('body').text('Connecting...');
 	socket.on('refresh',ml.refresh);
 	socket.on('update',ml.update);
