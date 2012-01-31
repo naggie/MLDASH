@@ -5,4 +5,6 @@ make above into node module
 
 local system stats server
 HTTP API
-JSON API
+JSON API
+
+unknown attr? ask for refresh

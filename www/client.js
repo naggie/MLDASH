@@ -16,33 +16,15 @@ ml.defaults = {
 	units:'%'
 }
 
-var testData = {
-	cheese:{foo:ml.defaults,bar:ml.defaults},
-	gravy:{
-		carcass:{value:56},
-		pigeon:{value:10,min:0,max:130,units:'',gradient:'positive'},
-		rat:{value:50,min:0,max:100,units:'%',gradient:'positive'},
-		kangaroo:{value:80,min:0,max:100,units:'%',gradient:'positive'},
-	}
-}
-
-var testDataUpdate = function(){
-	return {gravy: {
-			pigeon:{max:150,value:(Math.floor(Math.random()*100))},
-			rat:{max:150,value:(Math.floor(Math.random()*100))},
-			kangaroo:{max:150,value:(Math.floor(Math.random()*100))}
-		}
-	};
-}
-
-
 $(function(){
-	ml.refresh(testData);
+	var socket = io.connect('http://localhost:8080');
+	$('body').text('Connecting...');
+	socket.on('refresh',ml.refresh);
+	socket.on('update',ml.update);
 
-	setInterval(function(){
-		ml.update(testDataUpdate());
-	},600);
-
+	socket.on('disconnect',function(){
+		$('body').html('<div class="error">Network connection compromised</div>');
+	});
 });
 
 // initially (re)construct the objects, given a full state

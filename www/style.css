@@ -55,3 +55,11 @@ min-width:100px;
 padding:5px;
 height:10px;
 }
+
+.error{
+position:absolute;
+color:red;
+top:40%;
+text-align:center;
+width:100%;
+}
