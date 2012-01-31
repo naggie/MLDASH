@@ -25,15 +25,11 @@ var testDataUpdate = function(){
 
 io.sockets.on('connection',function (socket){
 	io.sockets.emit('refresh', testData);
-
-	socket.on('disconnect', function () {
-		console.log('user disconnected');
-	});
 });
 
 setInterval(function(){
 	var update = testDataUpdate();
 	io.sockets.emit('update',update);
-},80);
+},1000);
 
 
