@@ -23,7 +23,7 @@ text-align:center;
 width:30%;
 margin:31px;
 display:inline-block;
-min-width:360px;
+min-width:400px;
 max-width:600px;
 vertical-align:top;
 text-align:left;
@@ -61,5 +61,5 @@ position:absolute;
 color:red;
 top:40%;
 text-align:center;
-width:100%;
+left:0;right:0;
 }
