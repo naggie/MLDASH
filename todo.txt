@@ -1,0 +1,8 @@
+socket.io transport (separate from webserver)
+webserver
+integrate webserver and transport
+make above into node module
+
+local system stats server
+HTTP API
+JSON API
