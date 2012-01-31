@@ -1,0 +1,57 @@
+@font-face{
+font-family:'Ubuntu';
+font-style:normal;
+font-weight:normal;
+src:local('Ubuntu'),url('ubuntu.woff') format('woff');
+}
+
+@font-face {
+font-family:'Ubuntu';
+font-style:normal;
+font-weight:300;
+src:local('Ubuntu Light'),local('Ubuntu-Light'),url('ubuntu-light.woff') format('woff');
+}
+
+body{
+background:black;
+color:white;
+font-family: 'Ubuntu', sans-serif;
+text-align:center;
+}
+
+.object{
+width:30%;
+margin:31px;
+display:inline-block;
+min-width:360px;
+max-width:600px;
+vertical-align:top;
+text-align:left;
+}
+
+.object table{
+margin-left:20px;
+width:100%;
+}
+
+.object table td,.object table th{
+vertical-align:center;
+}
+
+.object table th{
+text-align:left;
+}
+
+td.limit{
+font-size:50%;
+}
+
+td.min{
+text-align:right;
+}
+
+td.bar{
+min-width:100px;
+padding:5px;
+height:10px;
+}
