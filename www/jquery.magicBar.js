@@ -63,7 +63,7 @@ $.fn.magicBar = function(options){
 	this.css('background-color','black');
 	this.each(function(){
 		if (!$(this).children().hasClass('magicBar'))
-			$(this).html('<div class="magicBar" style="height:100%;"></div>');
+			$(this).html('<div class="magicBar" style="height:100%;width:0"></div>');
 	});
 
 	// animate to new colour and width
