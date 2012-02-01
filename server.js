@@ -2,7 +2,8 @@
 var express = require('express');
 var app = express.createServer();
 var io = require('socket.io').listen(app);
-
+var os = require('os');
+var mls = {};
 
 app.listen(80);
 app.use(
@@ -11,33 +12,75 @@ app.use(
 
 io.set('log level',1);
 
-var testData = {
-	gravy:{
-		carcass:{value:56},
-		pigeon:{value:10,min:0,max:130,units:'',gradient:'positive'},
-		rat:{value:50,min:0,max:100,units:'%',gradient:'positive'},
-		kangaroo:{value:80,min:0,max:100,units:'%',gradient:'positive'},
+
+// full state of system, used for refresh and diff'd
+// against for updates
+mls.state = {};
+
+io.sockets.on('connection',function (socket){
+	io.sockets.emit('refresh', mls.state);
+});
+/*
+setInterval(function(){
+	var update = testDataUpdate();
+	io.sockets.emit('update',);
+},1000);
+*/
+/*
+// returns difference between new given state
+// and previous known state (mls.state) then
+// updates mls.state
+mls.diff = function(state){
+	var diff = {};
+
+	for (var ob in state)
+		
+
+	// update new state
+	mls.state = state;
+
+	return diff;
+}
+
+*/
+
+
+mls.state = {
+	'snorlax':{
+		'Memory usage':{
+			max:os.totalmem()/(1024*1024),
+			units:'MB',
+			gradient:'negative'
+		},
+		'Load average':{
+			gradient:'negative',
+			max:100
+		},
+		'Uptime':{
+			units:' days'
+		}
 	}
 }
 
-var testDataUpdate = function(){
-	return {gravy: {
-			pigeon:{max:150,value:(Math.floor(Math.random()*100))},
-			rat:{max:150,value:(Math.floor(Math.random()*100))},
-			kangaroo:{max:150,value:(Math.floor(Math.random()*100))}
-		}
-	};
-}
-
-
-
-io.sockets.on('connection',function (socket){
-	io.sockets.emit('refresh', testData);
-});
 
 setInterval(function(){
-	var update = testDataUpdate();
+	var memUsage = Math.floor((os.totalmem()-os.freemem())/(1024*1024));
+	var load = Math.floor(os.loadavg()[0]*100/os.cpus().length);
+	var uptime = Math.floor(os.uptime()/(3600*24));
+
+	var update = {
+		'snorlax':{
+			'Memory usage':{
+				value:memUsage
+			},
+			'Load average':{
+				value:load
+			},
+			'Uptime':{
+				value:uptime
+			}
+		}
+	};	
 	io.sockets.emit('update',update);
 },1000);
-
 

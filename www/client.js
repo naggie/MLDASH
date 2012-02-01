@@ -8,9 +8,10 @@ See ml.defaults for the attribute object format
 
 var ml = {};
 
+// the defaults result in no bar graph -- set 'max' to make one
 ml.defaults = {
 	min:0,
-	max:100,
+	max:null,
 	value:0,
 	gradient:null,
 	units:'%'
@@ -99,9 +100,13 @@ ml.updateAttribute = function(attr){
 
 	// update each field
 	$('.value',tr).html(attr.value+attr.units);
-	$('.bar',tr).magicBar(attr);
-	$('.min',tr).html(attr.min+attr.units);
-	$('.max',tr).html(attr.max+attr.units);
+
+	// optionally add the bar graph and limits
+	if (attr.max){
+		$('.bar',tr).magicBar(attr);
+		$('.min',tr).html(attr.min+attr.units);
+		$('.max',tr).html(attr.max+attr.units);
+	}
 }
 
 // add a new attribute row to given table
