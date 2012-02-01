@@ -19,7 +19,7 @@ font-family: 'Ubuntu', sans-serif;
 text-align:center;
 }
 
-.object{
+.group{
 width:30%;
 margin:31px;
 display:inline-block;
@@ -29,16 +29,16 @@ vertical-align:top;
 text-align:left;
 }
 
-.object table{
+.group table{
 margin-left:20px;
 width:100%;
 }
 
-.object table td,.object table th{
+.group table td,.group table th{
 vertical-align:center;
 }
 
-.object table th{
+.group table th{
 text-align:left;
 }
 

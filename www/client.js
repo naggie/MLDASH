@@ -1,8 +1,8 @@
 /*
-
-Data format: object names -> attribute names -> attribute object
+Data format: group names -> attribute names -> attribute object
 See ml.defaults for the attribute object format
-
+Or use shorthand attribute format -- instead of object, set value.
+This is useful for updates.
 */
 
 var socket = io.connect();
@@ -14,7 +14,7 @@ ml.defaults = {
 	max:null,
 	value:0,
 	gradient:null,
-	units:'%'
+	units:''
 }
 
 $(function(){
@@ -38,11 +38,11 @@ $(function(){
 
 });
 
-// initially (re)construct the objects, given a full state
+// initially (re)construct the groups, given a full state
 ml.refresh = function(state){
 	var context = $('body').empty();
 
-	state = ml.addIds(state);
+	state = ml.normalise(state);
 
 	for (var ob in state)
 		ml.addObject(ob,state[ob],context);
@@ -53,36 +53,40 @@ ml.refresh = function(state){
 // update the DOM with the new delta-state, where anything can be omitted
 // if unchanged
 ml.update = function(state){
-	state = ml.addIds(state);
+	state = ml.normalise(state);
 
 	for (var ob in state)
 		for (var attr in state[ob])
 			ml.updateAttribute(state[ob][attr]);
 }
 
+// converts from shorthand data format if needed, then
 // adds an unique ID to each attribute, allowing the attribute to be linked to
 // the DOM so that it can be easily updated
-ml.addIds = function(state){
-	// objects
+ml.normalise = function(state){
+	// groups
 	for (var ob in state)
-		for (var attr in state[ob])
+		for (var attr in state[ob]){
+			if (typeof state[ob][attr] != "object")
+				state[ob][attr] = {value:state[ob][attr]};
 			state[ob][attr].id = $.md5(ob+attr);
+		}
 
 	return state;
 }
 
-// re-arranges objects by height so that they display using as much
+// re-arranges groups by height so that they display using as much
 // of the screen as possible
 ml.sort = function(){
-	$('.object').sort(function(a,b){
+	$('.group').sort(function(a,b){
 		return ($(a).height() > $(b).height())?1:-1;
 	}).appendTo('body');
 }
 
-// adds an object containing attributes given an object of attributes to DOM
+// adds an group containing attributes given an group of attributes to DOM
 // (body)
 ml.addObject = function(name,attrs,context){
-	var ob = $('<div class="object" />').appendTo(context);
+	var ob = $('<div class="group" />').appendTo(context);
 	$('<h1 />').appendTo(ob).text(name);
 
 	var table = $('<table />').appendTo(ob);
@@ -91,9 +95,9 @@ ml.addObject = function(name,attrs,context){
 		ml.addAttribute(i,attrs[i],table);
 }
 
-// updates attribute row with changes from delta object given
+// updates attribute row with changes from delta group given
 // requires attr with id added by ml.getId()
-// merges with previously known data object
+// merges with previously known data group
 ml.updateAttribute = function(attr){
 	if (!attr.id)
 		console.error('No ID found in attr. Use ml.addIDs()',attr);

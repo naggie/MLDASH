@@ -1,11 +1,11 @@
-//var app = require('express').createServer()
 var express = require('express');
 var app = express.createServer();
 var io = require('socket.io').listen(app);
-var os = require('os');
-var mls = {};
+var mlt = {};
+
 
 app.listen(80);
+
 app.use(
 	express.static(__dirname + '/www')
 );
@@ -26,14 +26,40 @@ io.set('reconnection limit',1000);
 
 // full state of system, used for refresh and diff'd
 // against for updates
-mls.state = {};
+mlt.state = {};
+
+mlt.refresh = function(){
+
+}
+
+mlt.update = function(){
+
+}
+
 
 io.sockets.on('connection',function (socket){
-	io.sockets.emit('refresh', mls.state);
+	io.sockets.emit('refresh', mlt.state);
 });
 
 
-mls.state = {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var os = require('os');
+
+mlt.state = {
 	'snorlax':{
 		'Memory usage':{
 			max:os.totalmem()/(1024*1024),
@@ -42,10 +68,13 @@ mls.state = {
 		},
 		'Load average':{
 			gradient:'negative',
-			max:100
+			max:100,
+			units:"%"
 		},
 		'Uptime':{
 			units:' days'
+		},
+		'Local time':{
 		}
 	}
 }
@@ -55,20 +84,17 @@ setInterval(function(){
 	var memUsage = Math.floor((os.totalmem()-os.freemem())/(1024*1024));
 	var load = Math.floor(os.loadavg()[0]*100/os.cpus().length);
 	var uptime = Math.floor(os.uptime()/(3600*24));
+	var d = new Date();
+	var time = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
 
-	var update = {
-		'snorlax':{
-			'Memory usage':{
-				value:memUsage
-			},
-			'Load average':{
-				value:load
-			},
-			'Uptime':{
-				value:uptime
-			}
-		}
-	};	
+	var update = {};
+	update.snorlax = {
+		'Memory usage':memUsage,
+		'Load average':load,
+		'Uptime':uptime,
+		'Local time':time
+	}
+	
 	io.sockets.emit('update',update);
 },1000);
 
