@@ -1,15 +1,8 @@
-socket.io transport (separate from webserver)
-webserver
-integrate webserver and transport
-make above into node module
+make transport into node module?
 
-local system stats server
 HTTP API
 JSON API
 
 unknown attr? ask for refresh
-
-normalisation to convert from simple key:value maps and attrs with no bar graph -- server
-ignore bar graph possibility on client (default, max/min null?)
 
 configure so that reconnect is always tried, and messages on client events are fired

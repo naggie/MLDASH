@@ -1,8 +1,6 @@
 var express = require('express');
 var app = express.createServer();
 var io = require('socket.io').listen(app);
-var mlt = {};
-
 
 app.listen(80);
 
@@ -24,42 +22,14 @@ io.set('transports', [
 io.set('reconnection limit',1000);
 
 
-// full state of system, used for refresh and diff'd
-// against for updates
-mlt.state = {};
-
-mlt.refresh = function(){
-
-}
-
-mlt.update = function(){
-
-}
-
-
 io.sockets.on('connection',function (socket){
-	io.sockets.emit('refresh', mlt.state);
+	io.sockets.emit('refresh', initial);
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 var os = require('os');
 
-mlt.state = {
+var initial = {
 	'snorlax':{
 		'Memory usage':{
 			max:os.totalmem()/(1024*1024),
