@@ -1,8 +1,0 @@
-make transport into node module?
-
-HTTP API
-JSON API
-
-unknown attr? ask for refresh
-
-configure so that reconnect is always tried, and messages on client events are fired
