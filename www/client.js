@@ -5,7 +5,7 @@ See ml.defaults for the attribute object format
 
 */
 
-
+var socket = io.connect();
 var ml = {};
 
 // the defaults result in no bar graph -- set 'max' to make one
@@ -18,14 +18,24 @@ ml.defaults = {
 }
 
 $(function(){
-	var socket = io.connect();
-	$('body').text('Connecting...');
+	$('body').html('<div class="message">Connecting...</div>');
 	socket.on('refresh',ml.refresh);
 	socket.on('update',ml.update);
 
 	socket.on('disconnect',function(){
-		$('body').html('<div class="error">Network connection compromised</div>');
+		$('body').html('<div class="message">Network connection compromised</div>');
 	});
+
+	socket.on('reconnect_failed',function(){
+		$('body').html('<div class="message">Reconnect failed</div>');
+	
+
+	socket.on('reconnect',function(){
+		$('body').hml('<div class="message">Reconnecting...</div>');
+	});
+
+});
+
 });
 
 // initially (re)construct the objects, given a full state

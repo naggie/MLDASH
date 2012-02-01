@@ -11,6 +11,17 @@ app.use(
 );
 
 io.set('log level',1);
+io.enable('browser client minification');
+io.enable('browser client etag');
+io.enable('browser client gzip');
+io.set('transports', [                    
+    'websocket'
+  , 'flashsocket'
+  , 'htmlfile'
+  , 'xhr-polling'
+  , 'jsonp-polling'
+]);
+io.set('reconnection limit',1000);
 
 
 // full state of system, used for refresh and diff'd
@@ -20,29 +31,6 @@ mls.state = {};
 io.sockets.on('connection',function (socket){
 	io.sockets.emit('refresh', mls.state);
 });
-/*
-setInterval(function(){
-	var update = testDataUpdate();
-	io.sockets.emit('update',);
-},1000);
-*/
-/*
-// returns difference between new given state
-// and previous known state (mls.state) then
-// updates mls.state
-mls.diff = function(state){
-	var diff = {};
-
-	for (var ob in state)
-		
-
-	// update new state
-	mls.state = state;
-
-	return diff;
-}
-
-*/
 
 
 mls.state = {
