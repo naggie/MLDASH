@@ -23,7 +23,7 @@ io.set('reconnection limit',1000);
 
 
 io.sockets.on('connection',function (socket){
-	io.sockets.emit('refresh', initial);
+	socket.emit('refresh', initial);
 });
 
 
