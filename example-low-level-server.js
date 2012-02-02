@@ -19,7 +19,7 @@ io.set('transports', [
   , 'xhr-polling'
   , 'jsonp-polling'
 ]);
-io.set('reconnection limit',1000);
+//io.set('reconnection limit',1000);
 
 
 io.sockets.on('connection',function (socket){
