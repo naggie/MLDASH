@@ -1,7 +1,6 @@
 # Planned features
 
   * JSON API
-  * unknown attr? ask for refresh
   * configure so that reconnect is always tried, and messages on client events are fired, for example on a billboard it is unfeasible to refresh manually
   * Group aggregate status or something?
   * OOR (out of range) alarm -- flashing&|red attribute + alarm noise
@@ -27,7 +26,9 @@ The daemons may push an initial group followed by shorhand updates.
 
 In order to conserve bandwidth, a server-side aggregator might be needed to throttle the updates. It could also only send what has changed by maintaining the state of what the clients have and comparing it.
 
-Per host as group, monitoring:
+Offline detection required.
+
+Per hostname as group, monitoring:
 
   * Uptime in days
   * CPU usage in %
@@ -36,6 +37,7 @@ Per host as group, monitoring:
   * Temperatures
   * Network up/down
   * Total up/down this month (if there is a limit)
+  * Location, CPU type
 
 ## Host uptime monitor
 
@@ -54,3 +56,11 @@ Chemical/time/temperature analysis of fermentation.
 ## Continuous integration
 
 Could monitor build and test status
+
+## Sensor data analyser
+
+Connected via RS232 or ethernet to arduino. Server queries arduino.
+
+## HVAC conitoring system
+
+## Car stat analyser through port
