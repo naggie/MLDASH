@@ -28,25 +28,24 @@ io.sockets.on('connection',function (socket){
 
 
 var os = require('os');
+var host = os.hostname();
 
-var initial = {
-	'snorlax':{
-		'Memory usage':{
-			max:os.totalmem()/(1024*1024),
-			units:'MB',
-			gradient:'negative'
-		},
-		'Load average':{
-			gradient:'negative',
-			max:100,
-			units:"%"
-		},
-		'Uptime':{
-			units:' days'
-		},
-		'Local time':{
-		}
-	}
+var initial = {};
+initial[host] = {
+	'Memory usage':{
+		max:Math.floor(os.totalmem()/(1024*1024)),
+		units:'MB',
+		gradient:'negative'
+	},
+	'Load average':{
+		gradient:'negative',
+		max:100,
+		units:"%"
+	},
+	'Uptime':{
+		units:' days'
+	},
+	'Local time':{}
 }
 
 
@@ -58,7 +57,7 @@ setInterval(function(){
 	var time = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
 
 	var update = {};
-	update.snorlax = {
+	update[host] = {
 		'Memory usage':memUsage,
 		'Load average':load,
 		'Uptime':uptime,
