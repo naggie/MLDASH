@@ -13,16 +13,10 @@ var io = require('socket.io').listen(app);
 
 app.listen(80);
 
-app.use(
-	express.static(__dirname + '/www')
-//	express.bodyParser()
-);
-/*
+app.use(express.bodyParser());
+
 app.post('/', function(req, res){
 	// iterate over group
-console.log(req.body);
-res.end(req.body);
-return;
 	for (var grp in req.body){
 		if (!initial[grp])
 			addGroup(grp,req.body[grp]);
@@ -31,7 +25,9 @@ return;
 	}
 	res.end();
 });
-*/
+
+app.use(express.static(__dirname + '/www'));
+
 
 io.set('log level',1);
 io.enable('browser client minification');
