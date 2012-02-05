@@ -15,7 +15,23 @@ app.listen(80);
 
 app.use(
 	express.static(__dirname + '/www')
+//	express.bodyParser()
 );
+/*
+app.post('/', function(req, res){
+	// iterate over group
+console.log(req.body);
+res.end(req.body);
+return;
+	for (var grp in req.body){
+		if (!initial[grp])
+			addGroup(grp,req.body[grp]);
+		else
+			updateGroup(grp,req.body[grp]);
+	}
+	res.end();
+});
+*/
 
 io.set('log level',1);
 io.enable('browser client minification');
