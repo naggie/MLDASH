@@ -4,6 +4,8 @@
   * configure so that reconnect is always tried, and messages on client events are fired, for example on a billboard it is unfeasible to refresh manually
   * Group aggregate status or something?
   * OOR (out of range) alarm -- flashing&|red attribute + alarm noise
+  * Integrate error messages with request/responses for API -- add to server stack
+  * API key auth, generated at startup
 
 # Aggregator
 
