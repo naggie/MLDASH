@@ -6,6 +6,9 @@
   * OOR (out of range) alarm -- flashing&|red attribute + alarm noise
   * Integrate error messages with request/responses for API -- add to server stack
   * API key auth, generated at startup
+  * no initial animation for magicBar (causes ugly refresh)
+  * Package as npm app
+  * change shorthand -> longhand converter to use [].map() or [].forEach
 
 # Aggregator
 

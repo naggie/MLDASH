@@ -39,9 +39,9 @@ sendAttrs($host,array (
 		'gradient' => 'negative',
 		'max' => $totalGB
 	),
-	'Time' => array (
-		'value' => date('h:i:s'),
-	)
+//	'Time' => array (
+//		'value' => date('h:i:s'),
+//	)
 ));
 
 
@@ -57,7 +57,7 @@ while(1){
 		'uptime' =>  $days,
 		'CPU Load' => floor($uptime[9]*100/$pcount),
 		'Disk usage' => $totalGB-$freeGB,
-		'Time' => date('h:i:s'),
+//		'Time' => date('h:i:s'),
 	));
 
 	sleep(1);
