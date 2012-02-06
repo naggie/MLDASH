@@ -16,7 +16,7 @@
   * NOT time
 */
 
-$host = 'snorlax';
+$host = 'snowstorm';
 
 // dir to calc disk usage. May be auto generated to find
 // largest mount
@@ -38,6 +38,11 @@ $init = array (
 		'units' => 'GB',
 		'gradient' => 'negative',
 		'max' => $totalGB
+	),
+	'RAM Usage' => array (
+		'max' => shell_exec("free -m | grep 'Mem:' | awk '{print $2}'"),
+		'units' => 'MB',
+		'gradient' => 'negative',
 	),
 //	'Time' => array (
 //		'value' => date('h:i:s'),
@@ -68,6 +73,7 @@ while(1){
 		'CPU Load' => floor($uptime[9]*100/$pcount),
 		'Disk usage' => $totalGB-$freeGB,
 //		'Time' => date('h:i:s'),
+		'RAM Usage' => shell_exec("free -m | grep -E '\-\/\+' | awk '{print $3}'"),
 	);
 
 	if (isset($init['Temperature']))
