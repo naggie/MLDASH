@@ -13,11 +13,16 @@
   * Network up/down
   * Total up/down this month (if there is a limit)
   * Location, CPU type
+  * NOT time
 */
 
 $host = 'snowstorm';
 
-$totalGB = round(disk_total_space('/')/1073741824,1);
+// dir to calc disk usage. May be auto generated to find
+// largest mount
+$dir = '/srv/';
+
+$totalGB = round(disk_total_space($dir)/1073741824,1);
 
 // send initial attrs
 sendAttrs($host,array (
@@ -33,6 +38,9 @@ sendAttrs($host,array (
 		'units' => 'GB',
 		'gradient' => 'negative',
 		'max' => $totalGB
+	),
+	'Time' => array (
+		'value' => date('h:i:s'),
 	)
 ));
 
@@ -43,12 +51,13 @@ while(1){
 
 	$pcount = exec("cat /proc/cpuinfo | grep processor | wc -l");
 
-	$freeGB = round(disk_free_space('/')/1073741824,1);
+	$freeGB = round(disk_free_space($dir)/1073741824,1);
 	
 	sendAttrs($host,array(
 		'uptime' =>  $days,
 		'CPU Load' => floor($uptime[9]*100/$pcount),
 		'Disk usage' => $totalGB-$freeGB,
+		'Time' => date('h:i:s'),
 	));
 
 	sleep(1);
