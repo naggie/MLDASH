@@ -15,7 +15,7 @@
   * Location, CPU type
 */
 
-$host = '127.0.0.1';
+$host = 'snowstorm';
 
 $totalGB = round(disk_total_space('/')/1073741824,1);
 
@@ -39,12 +39,14 @@ sendAttrs($host,array (
 
 while(1){
 	$uptime = preg_split('/\s+/',trim(exec('uptime')));
-	$pcount = 4;//exec("cat /proc/cpuinfo | grep processor | wc -l");
+	$days = floor(end(preg_split('/\s+/',trim(exec('cat /proc/uptime'))))/86400);
+
+	$pcount = exec("cat /proc/cpuinfo | grep processor | wc -l");
 
 	$freeGB = round(disk_free_space('/')/1073741824,1);
 	
 	sendAttrs($host,array(
-		'uptime' =>  $uptime[2],
+		'uptime' =>  $days,
 		'CPU Load' => floor($uptime[9]*100/$pcount),
 		'Disk usage' => $totalGB-$freeGB,
 	));
