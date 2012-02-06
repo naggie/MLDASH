@@ -9,6 +9,8 @@
   * no initial animation for magicBar (causes ugly refresh)
   * Package as npm app
   * change shorthand -> longhand converter to use [].map() or [].forEach
+  * Dead detection
+
 
 # Aggregator
 

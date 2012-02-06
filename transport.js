@@ -72,20 +72,11 @@ var push = function(){
 					// make sure the attribute object exists in data structure
 					upd[grp][attr] = {};
 
-					if (clientState[grp][attr].min != state[grp][attr].min)
-						upd[grp][attr].min = state[grp][attr].min;
+					['min','max','units','gradient','value'].forEach(function(i){
+						if (clientState[grp][attr][i] != state[grp][attr][i])
+							upd[grp][attr][i] = state[grp][attr][i];
 
-					if (clientState[grp][attr].max != state[grp][attr].max)
-						upd[grp][attr].max = state[grp][attr].max;
-
-					if (clientState[grp][attr].units != state[grp][attr].units)
-						upd[grp][attr].units = state[grp][attr].units;
-
-					if (clientState[grp][attr].gradient != state[grp][attr].gradient)
-						upd[grp][attr].gradient = state[grp][attr].gradient;
-					
-					if (clientState[grp][attr].value != state[grp][attr].value)
-						upd[grp][attr].value = state[grp][attr].value;
+					});
 
 					// remove attribute from structure if empty (unchanged)
 					if (upd[grp][attr] == {}) delete upd[grp][attr];

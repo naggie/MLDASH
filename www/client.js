@@ -117,6 +117,7 @@ ml.updateAttribute = function(attr){
 
 	// optionally add the bar graph and limits
 	if (attr.max){
+		$('.value',tr).css('color', $.relateColour(attr) );
 		$('.bar',tr).magicBar(attr);
 		$('.min',tr).html(attr.min+attr.units);
 		$('.max',tr).html(attr.max+attr.units);
