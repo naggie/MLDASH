@@ -4,6 +4,9 @@
 // and node is too asynchronous to easily run commands
 // in the shell
 
+// This needs to be cleaned up when the aggregator is finalised and
+// the network utilisation is quantified.
+
 /* TODO
   * Uptime in days
   * CPU usage in %
@@ -16,11 +19,15 @@
   * NOT time
 */
 
+//$host = 'localhost';
 $host = 'snowstorm';
 
 // dir to calc disk usage. May be auto generated to find
 // largest mount
 $dir = '/srv/';
+
+// network device to count from
+$dev = 'eth0';
 
 $totalGB = round(disk_total_space($dir)/1073741824,1);
 
@@ -57,8 +64,24 @@ if (shell_exec('sensors')!==null)
 		'gradient' => 'negative'
 	);
 
+if (file_exists("/sys/class/net/$dev/speed"))
+	$init['Traffic'] = array (
+		'units' => 'Mbps',
+		'max' => file_get_contents("/sys/class/net/$dev/speed"),
+		'min' => 0,
+		'gradient' => 'negative'
+	);
+
+
 
 sendAttrs($host,$init);
+
+$txB = 0;
+$rxB = 0;
+$txBPrev = 0;
+$rxBPrev = 0;
+$elapsed = 0;
+$elapsedPrev = 0;
 
 while(1){
 	$uptime = preg_split('/\s+/',trim(exec('uptime')));
@@ -79,6 +102,29 @@ while(1){
 	if (isset($init['Temperature']))
 		$update['Temperature'] = shell_exec("sensors -u | grep input | grep temp | grep -oE '[0-9]{1,2}\.' | grep -oE '[0-9]+' | sort -g | tail -n 1");
 
+	// differentiate net traffic
+	if (isset($init['Traffic'])){
+		$elapsed = microtime(true);
+		// read in integral, convert bytes to megabits
+		$txB = (int)file_get_contents("/sys/class/net/$dev/statistics/tx_bytes");
+		$rxB = (int)file_get_contents("/sys/class/net/$dev/statistics/rx_bytes");
+
+		// use change per time to differentiate
+		$txBps = floor( ($txB-$txBPrev)/($elapsed-$elapsedPrev) );
+		$rxBps = floor( ($rxB-$rxBPrev)/($elapsed-$elapsedPrev) );
+
+		// convert to Megabits per second
+		$txMbps = round( $txBps/131072,1);
+		$rxMbps = round( $rxBps/131072,1);
+
+		// choose largest
+		$update['Traffic'] = $txMbps > $rxMbps? $txMbps:$rxMbps;
+		
+		$txBPrev = $txB;
+		$rxBPrev = $rxB;
+		$elapsedPrev = $elapsed;
+	}
+
 	sendAttrs($host,$update);
 
 	sleep(1);
@@ -86,6 +132,8 @@ while(1){
 
 
 function sendAttrs ($host,$attrs){
+	//return print_r($attrs);
+
 	$name = exec('hostname');
 
 	$data = json_encode(
