@@ -122,6 +122,12 @@ ml.updateAttribute = function(attr){
 		$('.min',tr).html(attr.min+attr.units);
 		$('.max',tr).html(attr.max+attr.units);
 	}
+
+	// out of range condition (setting alarm class will also trigger alarm noise)
+	if (attr.max && attr.value > attr.max)
+		$('th',tr).addClass('alarm');
+	else
+		$('th',tr).removeClass('alarm');
 }
 
 // add a new attribute row to given table

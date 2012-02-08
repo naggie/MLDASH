@@ -12,13 +12,7 @@ io.set('log level',1);
 io.enable('browser client minification');
 io.enable('browser client etag');
 io.enable('browser client gzip');
-io.set('transports', [                    
-    'websocket'
-  , 'flashsocket'
-  , 'htmlfile'
-  , 'xhr-polling'
-  , 'jsonp-polling'
-]);
+
 //io.set('reconnection limit',1000);
 
 

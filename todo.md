@@ -12,6 +12,7 @@
   * Auto units in report-stats
   * Smart API
   * Align left center for groups
+  * make XSS secure, key secured
 
 # Aggregator
 
