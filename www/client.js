@@ -28,14 +28,13 @@ $(function(){
 
 	socket.on('reconnect_failed',function(){
 		$('body').html('<div class="message">Reconnect failed</div>');
-	
+	});	
 
 	socket.on('reconnect',function(){
-		$('body').hml('<div class="message">Reconnecting...</div>');
+		$('body').html('<div class="message">Reconnecting...</div>');
 	});
 
-});
-
+	alarm.init();
 });
 
 // initially (re)construct the groups, given a full state
@@ -148,4 +147,19 @@ ml.addAttribute = function(name,attr,table){
 	// add to table, THEN update it (must be on DOM)
 	tr.appendTo(table);
 	ml.updateAttribute(attr);
+}
+
+var alarm = {};
+// set up the alarm to load the noise
+// then periodically look for 'alarm' classes. If found, sounds alarm.
+alarm.init = function(){
+	alarm.audio = document.createElement('audio');
+
+	alarm.audio.src = 'alarm.wav';
+	alarm.audio.load();
+
+	setInterval(function(){
+		if ($('.alarm').length)
+			alarm.audio.play();
+	},330);
 }
