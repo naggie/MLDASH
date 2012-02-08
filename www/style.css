@@ -38,6 +38,10 @@ width:100%;
 vertical-align:center;
 }
 
+.group table td.value{
+text-align:right;
+}
+
 .group table th{
 text-align:left;
 }
