@@ -10,7 +10,6 @@
   * Group decay 
   * Value initialisation in report-stats
   * Auto units in report-stats
-  * Fix jumpy columns
   * Smart API
   * Align left center for groups
 

@@ -87,7 +87,7 @@ while(1){
 	$uptime = preg_split('/\s+/',trim(exec('uptime')));
 	$days = floor(end(preg_split('/\s+/',trim(exec('cat /proc/uptime'))))/86400);
 
-	$pcount = exec("cat /proc/cpuinfo | grep processor | wc -l");
+	$pcount = (int)exec("cat /proc/cpuinfo | grep processor | wc -l");
 
 	$freeGB = round(disk_free_space($dir)/1073741824,1);
 
@@ -100,7 +100,7 @@ while(1){
 	);
 
 	if (isset($init['Temperature']))
-		$update['Temperature'] = shell_exec("sensors -u | grep input | grep temp | grep -oE '[0-9]{1,2}\.' | grep -oE '[0-9]+' | sort -g | tail -n 1");
+		$update['Temperature'] = shell_exec("sensors -u | grep input | grep temp | grep -v - | grep -oE '[0-9]{1,2}\.' | grep -oE '[0-9]+' | sort -g | tail -n 1");
 
 	// differentiate net traffic
 	if (isset($init['Traffic'])){
