@@ -123,9 +123,10 @@ ml.updateAttribute = function(attr){
 	}
 
 	// out of range condition (setting alarm class will also trigger alarm noise)
-	if (attr.max && attr.value > attr.max)
+	if (attr.max && attr.value > attr.max){
 		$('th',tr).addClass('alarm');
-	else
+		$('.value',tr).append('!');
+	}else
 		$('th',tr).removeClass('alarm');
 }
 
