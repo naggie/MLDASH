@@ -40,6 +40,7 @@ vertical-align:center;
 
 .group table td.value{
 text-align:right;
+width:100px;
 }
 
 .group table th{
