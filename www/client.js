@@ -3,6 +3,8 @@ Data format: group names -> attribute names -> attribute object
 See ml.defaults for the attribute object format
 Or use shorthand attribute format -- instead of object, set value.
 This is useful for updates.
+
+// TODO: enforce Number type in normaliser so that comparisons work correctly.
 */
 
 var socket = io.connect();
@@ -123,7 +125,9 @@ ml.updateAttribute = function(attr){
 	}
 
 	// out of range condition (setting alarm class will also trigger alarm noise)
-	if (attr.max && attr.value > attr.max){
+	// HACK: convert to Number type to avoid string comparison causing an error
+	// triggering alarm falsely. Will be fixed with enforcing -- see header.
+	if (attr.max && Number(attr.value) > Number(attr.max)){
 		$('th',tr).addClass('alarm');
 		$('.value',tr).append('!');
 	}else
