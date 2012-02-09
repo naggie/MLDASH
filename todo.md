@@ -13,6 +13,7 @@
   * Smart API
   * Align left center for groups
   * make XSS secure, key secured
+  * Install properly with git on test server, restart hooks
 
 # Aggregator
 
