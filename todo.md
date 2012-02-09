@@ -11,9 +11,10 @@
   * Value initialisation in report-stats
   * Auto units in report-stats
   * Smart API
-  * Align left center for groups
   * make XSS secure, key secured
   * Install properly with git on test server, restart hooks
+  * Minimum out of range alarm, implies initial full state, hopefully not canning shorhand updates!
+  * Fix Number() problem
 
 # Aggregator
 
