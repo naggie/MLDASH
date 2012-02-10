@@ -33,17 +33,18 @@ margin-left:20px;
 width:100%;
 }
 
-.group table td,.group table th{
-vertical-align:center;
-}
-
 .group table td.value{
 text-align:right;
 width:100px;
+padding-right:5px;
 }
 
 .group table th{
 text-align:left;
+}
+
+th{
+min-width:160px;
 }
 
 td.limit{
@@ -58,6 +59,10 @@ td.bar{
 min-width:100px;
 padding:5px;
 height:10px;
+}
+
+.magicBar{
+max-height:10px;
 }
 
 .message{

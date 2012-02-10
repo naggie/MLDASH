@@ -13,8 +13,11 @@
   * Smart API
   * make XSS secure, key secured
   * Install properly with git on test server, restart hooks
-  * Minimum out of range alarm, implies initial full state, hopefully not canning shorhand updates!
+  * Minimum out of range alarm, needs null initial value 
   * Fix Number() problem
+  * Client should be portable -- to include JS/CSS on websites
+  * Can shorthand?
+  * Silence pipe errors
 
 # Aggregator
 

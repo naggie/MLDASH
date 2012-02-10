@@ -14,7 +14,7 @@ var ml = {};
 ml.defaults = {
 	min:0,
 	max:null,
-	value:0,
+	value:null,
 	gradient:null,
 	units:''
 }
@@ -114,7 +114,8 @@ ml.updateAttribute = function(attr){
 	tr.data('attr',attr);
 
 	// update each field
-	$('.value',tr).html(attr.value+attr.units);
+	if (attr.value)
+		$('.value',tr).html(attr.value+attr.units);
 
 	// optionally add the bar graph and limits
 	if (attr.max){
@@ -122,16 +123,15 @@ ml.updateAttribute = function(attr){
 		$('.bar',tr).magicBar(attr);
 		$('.min',tr).html(attr.min+attr.units);
 		$('.max',tr).html(attr.max+attr.units);
+
+		// out of range condition (setting alarm class will also trigger alarm noise)
+		if (attr.value > attr.max || attr.value < attr.min){
+			$('th',tr).addClass('alarm');
+			$('.value',tr).append('!');
+		}else
+			$('th',tr).removeClass('alarm');
 	}
 
-	// out of range condition (setting alarm class will also trigger alarm noise)
-	// HACK: convert to Number type to avoid string comparison causing an error
-	// triggering alarm falsely. Will be fixed with enforcing -- see header.
-	if (attr.max && Number(attr.value) > Number(attr.max)){
-		$('th',tr).addClass('alarm');
-		$('.value',tr).append('!');
-	}else
-		$('th',tr).removeClass('alarm');
 }
 
 // add a new attribute row to given table

@@ -47,7 +47,7 @@ $init = array (
 		'max' => $totalGB
 	),
 	'RAM Usage' => array (
-		'max' => shell_exec("free -m | grep 'Mem:' | awk '{print $2}'"),
+		'max' => (int)shell_exec("free -m | grep 'Mem:' | awk '{print $2}'"),
 		'units' => 'MB',
 		'gradient' => 'negative',
 	),
@@ -67,7 +67,7 @@ if (shell_exec('sensors')!==null)
 if (file_exists("/sys/class/net/$dev/speed"))
 	$init['Traffic'] = array (
 		'units' => 'Mbps',
-		'max' => file_get_contents("/sys/class/net/$dev/speed"),
+		'max' => (int)file_get_contents("/sys/class/net/$dev/speed"),
 		'min' => 0,
 		'gradient' => 'negative'
 	);
@@ -96,11 +96,11 @@ while(1){
 		'CPU Load' => floor($uptime[9]*100/$pcount),
 		'Disk usage' => $totalGB-$freeGB,
 //		'Time' => date('h:i:s'),
-		'RAM Usage' => shell_exec("free -m | grep -E '\-\/\+' | awk '{print $3}'"),
+		'RAM Usage' => (int)shell_exec("free -m | grep -E '\-\/\+' | awk '{print $3}'"),
 	);
 
 	if (isset($init['Temperature']))
-		$update['Temperature'] = shell_exec("sensors -u | grep input | grep temp | grep -v - | grep -oE '[0-9]{1,2}\.' | grep -oE '[0-9]+' | sort -g | tail -n 1");
+		$update['Temperature'] = (int)shell_exec("sensors -u | grep input | grep temp | grep -v - | grep -oE '[0-9]{1,2}\.' | grep -oE '[0-9]+' | sort -g | tail -n 1");
 
 	// differentiate net traffic
 	if (isset($init['Traffic'])){
