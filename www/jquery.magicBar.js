@@ -58,16 +58,19 @@ $.fn.magicBar = function(options){
 	percent = Math.min(100,percent);
 
 	var colour = $.relateColour(settings);
-
+	
 	// ensure there the divs are set up right, individually
 	this.css('background-color','black');
 	this.each(function(){
 		if (!$(this).children().hasClass('magicBar'))
-			$(this).html('<div class="magicBar" style="height:100%;width:0"></div>');
+			$('<div class="magicBar"></div>').appendTo(this)
+				.css('height','100%')
+				.css('width',percent+'%')
+				.css('background-color',colour);
 	});
 
 	// animate to new colour and width
-	this.children().stop().animate({
+	$('.magicBar',this).stop().animate({
 		'background-color' : colour,
 		'width' : percent+'%'
 	});
