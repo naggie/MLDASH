@@ -116,7 +116,7 @@ ml.updateAttribute = function(attr){
 	// update each field
 	// HACK -- number should be either undefined or a number
 	// but defaults to null at the moment
-	if (!isNaN(attr.value))
+	if (attr.value == Number(attr.value))
 		$('.value',tr).html(attr.value+attr.units);
 
 	// optionally add the bar graph and limits
