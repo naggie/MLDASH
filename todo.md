@@ -18,6 +18,7 @@
   * Client should be portable -- to include JS/CSS on websites
   * Can shorthand?
   * Silence pipe errors
+  * Can defaults
 
 # Aggregator
 

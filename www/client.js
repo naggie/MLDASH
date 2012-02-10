@@ -114,7 +114,9 @@ ml.updateAttribute = function(attr){
 	tr.data('attr',attr);
 
 	// update each field
-	if (attr.value)
+	// HACK -- number should be either undefined or a number
+	// but defaults to null at the moment
+	if (attr.value = Number(attr.val))
 		$('.value',tr).html(attr.value+attr.units);
 
 	// optionally add the bar graph and limits
