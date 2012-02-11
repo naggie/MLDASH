@@ -46,7 +46,7 @@ ml.refresh = function(state){
 	state = ml.normalise(state);
 
 	for (var ob in state)
-		ml.addObject(ob,state[ob],context);
+		ml.addGroup(ob,state[ob],context);
 
 	ml.sort();
 }
@@ -86,7 +86,7 @@ ml.sort = function(){
 
 // adds an group containing attributes given an group of attributes to DOM
 // (body)
-ml.addObject = function(name,attrs,context){
+ml.addGroup = function(name,attrs,context){
 	var ob = $('<div class="group" />').appendTo(context);
 	$('<h1 />').appendTo(ob).text(name);
 
