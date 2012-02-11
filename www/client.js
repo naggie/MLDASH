@@ -172,5 +172,10 @@ alarm.init = function(){
 	setInterval(function(){
 		if ($('.alarm').length)
 			alarm.audio.play();
-	},1000);
+
+		$('.alarm').css('color','red');
+		setTimeout(function(){
+			$('.alarm').css('color','#ffffff');
+		},150);
+	},500);
 }

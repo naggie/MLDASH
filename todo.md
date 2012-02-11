@@ -2,10 +2,8 @@
 
   * configure so that reconnect is always tried, and messages on client events are fired, for example on a billboard it is unfeasible to refresh manually
   * Group aggregate status or something?
-  * OOR (out of range) alarm -- flashing&|red attribute + alarm noise
   * Integrate error messages with request/responses for API -- add to server stack
   * API key auth, generated at startup?
-  * no initial animation for magicBar (causes ugly refresh)
   * Package as npm app
   * Group decay 
   * Value initialisation in report-stats
@@ -13,12 +11,11 @@
   * Smart API
   * make XSS secure, key secured
   * Install properly with git on test server, restart hooks
-  * Minimum out of range alarm, needs null initial value 
-  * Fix Number() problem
   * Client should be portable -- to include JS/CSS on websites
   * Can shorthand?
   * Silence pipe errors
-  * Can defaults
+  * Can defaults?
+  * Fix mobile client widths
 
 # Aggregator
 
