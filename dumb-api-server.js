@@ -42,23 +42,13 @@ io.set('transports', [
 ]);
 
 
-// format and future values
 // longhand defining parameters of attributes
 var initial = {};
-// shorthand attribute values only
-var update = {};
-
 
 // new client
 io.sockets.on('connection',function (socket){
 	socket.emit('refresh',initial);
 });
-
-
-// Pushes shorthand updates to clients
-setInterval(function(){
-		io.sockets.emit('update',update);
-},1000);
 
 
 // add a new group, defining initial state
@@ -88,5 +78,8 @@ var updateGroup = function(group,attrs){
 			console.log('Update failed: Attribute to update not found in initial state:',attr);
 
 	}
+
+	var update = {};
 	update[group] = attrs;
+	return io.sockets.volatile.emit('update',update);
 }

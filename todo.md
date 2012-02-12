@@ -16,6 +16,7 @@
   * Silence pipe errors
   * Can defaults?
   * Fix mobile client widths
+  * Benchmark realtime updates vs aggregated updates (socket!)
 
 # Aggregator
 
