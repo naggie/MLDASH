@@ -5,7 +5,7 @@
   * Integrate error messages with request/responses for API -- add to server stack
   * API key auth, generated at startup?
   * Package as npm app
-  * Group decay 
+  * Group decay by serverside watchdog (nulld) (fade out, keep last values?)
   * Value initialisation in report-stats
   * Auto units in report-stats
   * Smart API
@@ -15,8 +15,8 @@
   * Can shorthand?
   * Silence pipe errors
   * Can defaults?
-  * Fix mobile client widths
-  * Benchmark realtime updates vs aggregated updates (socket!)
+  * Heartbeat (update blinker) per group?
+  * Smarter magicbar -- only animate when necessary to avoid jitteryness
 
 # Aggregator
 
