@@ -1,9 +1,8 @@
 # Planned features
 
-  * configure so that reconnect is always tried, and messages on client events are fired, for example on a billboard it is unfeasible to refresh manually
   * Group aggregate status or something?
   * Integrate error messages with request/responses for API -- add to server stack
-  * API key auth, generated at startup?
+  * API key auth, generated at startup or first key posted
   * Package as npm app
   * Group decay by serverside watchdog (nulld) (fade out, keep last values?)
   * Value initialisation in report-stats
@@ -17,6 +16,8 @@
   * Can defaults?
   * Heartbeat (update blinker) per group?
   * Smarter magicbar -- only animate when necessary to avoid jitteryness
+  * Switch from express to connect
+  * Pull update command
 
 # Aggregator
 
@@ -76,4 +77,13 @@ Connected via RS232 or ethernet to arduino. Server queries arduino.
 
 ## HVAC conitoring system
 
-## Car stat analyser through port
+## Car stat analyser through ODB-II can bus port
+
+
+# Fetures for evented system
+
+## Announcements
+
+## Downloads 
+
+## Pre

@@ -8,13 +8,16 @@ app.use(
 	express.static(__dirname + '/www')
 );
 
-io.set('log level',1);
-io.enable('browser client minification');
-io.enable('browser client etag');
-io.enable('browser client gzip');
 
-//io.set('reconnection limit',1000);
+io.configure(function(){
+	io.set('log level',1);
+	io.enable('browser client minification');
+	io.enable('browser client etag');
+	io.enable('browser client gzip');
 
+	io.set('reconnection limit',2000);
+	io.set('max connection attempts',Infinity);
+});
 
 io.sockets.on('connection',function (socket){
 	socket.emit('refresh', initial);
