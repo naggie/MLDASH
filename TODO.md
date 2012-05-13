@@ -1,5 +1,6 @@
 # Planned features
 
+  * Gritter support for alarm events
   * Group aggregate status or something?
   * Integrate error messages with request/responses for API -- add to server stack
   * API key auth, generated at startup or first key posted
@@ -18,6 +19,7 @@
   * Smarter magicbar -- only animate when necessary to avoid jitteryness
   * Switch from express to connect
   * Pull update command
+  * Alarm attribute setting, default off
 
 # Aggregator
 
@@ -87,3 +89,8 @@ Connected via RS232 or ethernet to arduino. Server queries arduino.
 ## Downloads 
 
 ## Pre
+
+
+
+http://demo.tutorialzine.com/2009/12/colorful-clock-jquery-css/demo.html
+http://visualidiot.com/files/real-world.css
