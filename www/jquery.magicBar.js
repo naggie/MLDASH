@@ -70,7 +70,7 @@ $.fn.magicBar = function(options){
 	});
 
 	// animate to new colour and width
-	$('.magicBar',this).stop().animate({
+	$('.magicBar',this).stop(true).animate({
 		'background-color' : colour,
 		'width' : percent+'%'
 	});
