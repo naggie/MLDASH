@@ -7,8 +7,8 @@ This is useful for updates.
 // TODO: enforce Number type in normaliser so that comparisons work correctly.
 */
 
-var socket = io.connect();
-var ml = {};
+var socket = io.connect()
+var ml = {}
 
 // the defaults result in no bar graph -- set 'max' to make one
 ml.defaults = {
@@ -20,45 +20,45 @@ ml.defaults = {
 }
 
 $(function(){
-	$('body').html('<div class="message">Connecting...</div>');
-	socket.on('refresh',ml.refresh);
-	socket.on('update',ml.update);
+	$('body').html('<div class="message">Connecting...</div>')
+	socket.on('refresh',ml.refresh)
+	socket.on('update',ml.update)
 
 	socket.on('disconnect',function(){
-		$('body').html('<div class="message">Network connection compromised</div>');
-	});
+		$('body').html('<div class="message">Network connection compromised</div>')
+	})
 
 	socket.on('reconnect_failed',function(){
-		$('body').html('<div class="message">Reconnect failed</div>');
-	});	
+		$('body').html('<div class="message">Reconnect failed</div>')
+	})	
 
 	socket.on('reconnect',function(){
-		$('body').html('<div class="message">Reconnecting...</div>');
-	});
+		$('body').html('<div class="message">Reconnecting...</div>')
+	})
 
-	alarm.init();
-});
+	alarm.init()
+})
 
 // initially (re)construct the groups, given a full state
 ml.refresh = function(state){
-	var context = $('body').empty();
+	var context = $('body').empty()
 
-	state = ml.normalise(state);
+	state = ml.normalise(state)
 
 	for (var ob in state)
-		ml.addGroup(ob,state[ob],context);
+		ml.addGroup(ob,state[ob],context)
 
-	ml.sort();
+	ml.sort()
 }
 
 // update the DOM with the new delta-state, where anything can be omitted
 // if unchanged
 ml.update = function(state){
-	state = ml.normalise(state);
+	state = ml.normalise(state)
 
 	for (var ob in state)
 		for (var attr in state[ob])
-			ml.updateAttribute(state[ob][attr]);
+			ml.updateAttribute(state[ob][attr])
 }
 
 // converts from shorthand data format if needed, then
@@ -69,31 +69,31 @@ ml.normalise = function(state){
 	for (var ob in state)
 		for (var attr in state[ob]){
 			if (typeof state[ob][attr] != "object")
-				state[ob][attr] = {value:state[ob][attr]};
-			state[ob][attr].id = $.md5(ob+attr);
+				state[ob][attr] = {value:state[ob][attr]}
+			state[ob][attr].id = $.md5(ob+attr)
 		}
 
-	return state;
+	return state
 }
 
 // re-arranges groups by height so that they display using as much
 // of the screen as possible
 ml.sort = function(){
 	$('.group').sort(function(a,b){
-		return ($(a).height() > $(b).height())?1:-1;
-	}).appendTo('body');
+		return ($(a).height() > $(b).height())?1:-1
+	}).appendTo('body')
 }
 
 // adds an group containing attributes given an group of attributes to DOM
 // (body)
 ml.addGroup = function(name,attrs,context){
-	var ob = $('<div class="group" />').appendTo(context);
-	$('<h1 />').appendTo(ob).text(name);
+	var ob = $('<div class="group" />').appendTo(context)
+	$('<h1 />').appendTo(ob).text(name)
 
-	var table = $('<table />').appendTo(ob);
+	var table = $('<table />').appendTo(ob)
 
 	for (var i in attrs)
-		ml.addAttribute(i,attrs[i],table);
+		ml.addAttribute(i,attrs[i],table)
 }
 
 // updates attribute row with changes from delta group given
@@ -101,41 +101,41 @@ ml.addGroup = function(name,attrs,context){
 // merges with previously known data group
 ml.updateAttribute = function(attr){
 	if (!attr.id)
-		console.error('No ID found in attr. Use ml.addIDs()',attr);
+		console.error('No ID found in attr. Use ml.addIDs()',attr)
 
 	// find the attribute table row using id
-	var tr = $('#'+attr.id);
+	var tr = $('#'+attr.id)
 
 	// compute new attr based on old+delta
-	var prev = tr.data('attr');
-	if (prev) attr = $.extend({},prev,attr);
+	var prev = tr.data('attr')
+	if (prev) attr = $.extend({},prev,attr)
 
 	// save new attr
-	tr.data('attr',attr);
+	tr.data('attr',attr)
 
 	// update each field
 	// HACK -- number should be either undefined or a number
 	// but defaults to null at the moment
 	if (attr.value == Number(attr.value))
-		$('.value',tr).html(attr.value+attr.units);
+		$('.value',tr).html(attr.value+attr.units)
 
 	// optionally add the bar graph and limits
 	if (attr.max){
-		$('.value',tr).css('color', $.relateColour(attr) );
+		$('.value',tr).css('color', $.relateColour(attr) )
 
 		if(attr.value == Number(attr.value))
-			$('.bar',tr).magicBar(attr);
+			$('.bar',tr).magicBar(attr)
 
-		$('.min',tr).html(attr.min+attr.units);
-		$('.max',tr).html(attr.max+attr.units);
+		$('.min',tr).html(attr.min+attr.units)
+		$('.max',tr).html(attr.max+attr.units)
 
 		// out of range condition (setting alarm class will also trigger alarm noise)
 		// HACK -- same as previous use of Number()
 		if (attr.value == Number(attr.value) && (attr.value > attr.max || attr.value < attr.min)){
-			$('th',tr).addClass('alarm');
-			$('.value',tr).append('!');
+			$('th',tr).addClass('alarm')
+			$('.value',tr).append('!')
 		}else
-			$('th',tr).removeClass('alarm');
+			$('th',tr).removeClass('alarm')
 	}
 
 }
@@ -143,39 +143,39 @@ ml.updateAttribute = function(attr){
 // add a new attribute row to given table
 ml.addAttribute = function(name,attr,table){
 	if (!attr.id)
-		console.error('No ID found in attr. Use ml.addIDs()',attr);
+		console.error('No ID found in attr. Use ml.addIDs()',attr)
 
 	// merge initial attr with anydefaults
-	attr = $.extend({},ml.defaults,attr);
+	attr = $.extend({},ml.defaults,attr)
 
-	var tr = $('<tr><th></th><td class="value"></td><td class="min limit"></td><td class="bar"></td><td class="max limit"></td></tr>');
+	var tr = $('<tr><th></th><td class="value"></td><td class="min limit"></td><td class="bar"></td><td class="max limit"></td></tr>')
 
 	// assign the unique DOM ID so the element can be updated easily
-	tr.attr('id',attr.id);
+	tr.attr('id',attr.id)
 
-	$('th',tr).text(name);
+	$('th',tr).text(name)
 
 	// add to table, THEN update it (must be on DOM)
-	tr.appendTo(table);
-	ml.updateAttribute(attr);
+	tr.appendTo(table)
+	ml.updateAttribute(attr)
 }
 
-var alarm = {};
+var alarm = {}
 // set up the alarm to load the noise
 // then periodically look for 'alarm' classes. If found, sounds alarm.
 alarm.init = function(){
-	alarm.audio = document.createElement('audio');
+	alarm.audio = document.createElement('audio')
 
-	alarm.audio.src = 'alarm.wav';
-	alarm.audio.load();
+	alarm.audio.src = 'alarm.wav'
+	alarm.audio.load()
 
 	setInterval(function(){
 		if ($('.alarm').length)
-			alarm.audio.play();
+			alarm.audio.play()
 
-		$('.alarm').css('color','red');
+		$('.alarm').css('color','red')
 		setTimeout(function(){
-			$('.alarm').css('color','#ffffff');
-		},150);
-	},500);
+			$('.alarm').css('color','#ffffff')
+		},150)
+	},500)
 }
