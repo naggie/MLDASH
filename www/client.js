@@ -7,7 +7,11 @@ This is useful for updates.
 // TODO: enforce Number type in normaliser so that comparisons work correctly.
 */
 
-var socket = io.connect()
+var socket = io.connect(undefined,{
+	'reconnection limit' : 4000,
+	'max reconnection attempts': Infinity
+})
+
 var ml = {}
 
 // the defaults result in no bar graph -- set 'max' to make one
