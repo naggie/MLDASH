@@ -6,16 +6,16 @@ src:local('Ubuntu'),url('ubuntu.woff') format('woff');
 }
 
 @font-face {
-font-family:'Ubuntu';
-font-style:normal;
-font-weight:300;
-src:local('Ubuntu Light'),local('Ubuntu-Light'),url('ubuntu-light.woff') format('woff');
+font-family: 'Raleway';
+font-style: normal;
+font-weight: 100;
+src: local('Raleway-Thin'), url('raleway.ttf')
 }
 
 body{
 background:black;
 color:white;
-font-family: 'Ubuntu', sans-serif;
+font-family: 'Raleway', sans-serif;
 }
 
 .group{
@@ -28,6 +28,10 @@ vertical-align:top;
 text-align:left;
 }
 
+.group h1 {
+text-transform:uppercase;
+}
+
 .group table{
 margin-left:20px;
 width:100%;
@@ -37,6 +41,9 @@ width:100%;
 text-align:right;
 min-width:80px;
 padding-right:5px;
+font-family:sans-serif;
+font-weight:100;
+font-size:14px;
 }
 
 .group table th{
