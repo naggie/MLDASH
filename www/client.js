@@ -183,12 +183,6 @@ alarm.init = function(){
 
 		alarm.audio.play()
 		$('body').css('background','red')
-	
-
-		$('.alarm').css('color','red')
-		setTimeout(function(){
-			$('.alarm').css('color','#ffffff')
-		},150)
 
 		setTimeout(function(){
 			$('body').css('background','black')
