@@ -21,6 +21,12 @@ vertical-align:top;
 text-align:left;
 }
 
+#title {
+font-size:40px;
+margin:0;
+text-transform:uppercase;
+}
+
 .group h1 {
 text-transform:uppercase;
 }
@@ -65,7 +71,7 @@ height:10px;
 max-height:10px;
 }
 
-.message{
+#splash{
 position:absolute;
 top:40%;
 text-align:center;

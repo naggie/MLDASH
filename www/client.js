@@ -24,20 +24,24 @@ ml.defaults = {
 }
 
 $(function(){
-	$('body').html('<div class="message">Connecting...</div>')
+	$('#splash').show().text('Connecting...')
 	socket.on('refresh',ml.refresh)
 	socket.on('update',ml.update)
 
+	socket.on('title',function(title) {
+		$('#title').text(title)
+	})
+
 	socket.on('disconnect',function(){
-		$('body').html('<div class="message">Network connection compromised</div>')
+		$('#splash').show().text('Network connection compromised')
 	})
 
 	socket.on('reconnect_failed',function(){
-		$('body').html('<div class="message">Reconnect failed</div>')
+		$('#splash').show().text('Reconnect failed')
 	})	
 
 	socket.on('reconnect',function(){
-		$('body').html('<div class="message">Reconnecting...</div>')
+		$('#splash').show().text('Reconnecting...')
 	})
 
 	alarm.init()
@@ -45,7 +49,8 @@ $(function(){
 
 // initially (re)construct the groups, given a full state
 ml.refresh = function(state){
-	var context = $('body').empty()
+	$('#splash').hide()
+	var context = $('#stats').empty()
 
 	state = ml.normalise(state)
 
@@ -85,7 +90,7 @@ ml.normalise = function(state){
 ml.sort = function(){
 	$('.group').sort(function(a,b){
 		return ($(a).height() > $(b).height())?1:-1
-	}).appendTo('body')
+	}).appendTo('#stats')
 }
 
 // adds an group containing attributes given an group of attributes to DOM

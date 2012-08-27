@@ -50,6 +50,7 @@ var initial = {}
 // new client
 io.sockets.on('connection',function (socket){
 	socket.emit('refresh',initial)
+	socket.emit('title','darksky.io server fleet')
 })
 
 
