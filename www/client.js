@@ -99,7 +99,7 @@ ml.addGroup = function(name,attrs,context){
 	var ob = $('<div class="group" />').appendTo(context)
 	$('<h1 />').appendTo(ob).text(name)
 
-	var table = $('<table />').appendTo(ob).hide().fadeIn()
+	var table = $('<table />').appendTo(ob)
 
 	for (var i in attrs)
 		ml.addAttribute(i,attrs[i],table)
