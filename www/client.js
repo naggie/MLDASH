@@ -167,6 +167,7 @@ ml.addAttribute = function(name,attr,table){
 var alarm = {}
 // set up the alarm to load the noise
 // then periodically look for 'alarm' classes. If found, sounds alarm.
+// and blinks the document red. Which is horrible.
 alarm.init = function(){
 	alarm.audio = document.createElement('audio')
 
@@ -181,5 +182,10 @@ alarm.init = function(){
 		setTimeout(function(){
 			$('.alarm').css('color','#ffffff')
 		},150)
+
+		$('body').css('background','red')
+		setTimeout(function(){
+			$('body').css('background','black')
+		},60)
 	},4000)
 }
