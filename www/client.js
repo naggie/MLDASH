@@ -170,7 +170,7 @@ var alarm = {}
 alarm.init = function(){
 	alarm.audio = document.createElement('audio')
 
-	alarm.audio.src = 'alarm.wav'
+	alarm.audio.src = 'alarm.ogg'
 	alarm.audio.load()
 
 	setInterval(function(){
@@ -181,5 +181,5 @@ alarm.init = function(){
 		setTimeout(function(){
 			$('.alarm').css('color','#ffffff')
 		},150)
-	},500)
+	},4000)
 }
