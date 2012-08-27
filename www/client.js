@@ -175,17 +175,19 @@ alarm.init = function(){
 	alarm.audio.load()
 
 	setInterval(function(){
-		if ($('.alarm').length)
-			alarm.audio.play()
+		if (!$('.alarm').length) return
+
+		alarm.audio.play()
+		$('body').css('background','red')
+	
 
 		$('.alarm').css('color','red')
 		setTimeout(function(){
 			$('.alarm').css('color','#ffffff')
 		},150)
 
-		$('body').css('background','red')
 		setTimeout(function(){
 			$('body').css('background','black')
-		},60)
+		},50)
 	},4000)
 }
