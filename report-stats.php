@@ -31,7 +31,7 @@ $dev = 'eth0';
 
 $totalGB = round(disk_total_space($dir)/1073741824,1);
 
-// send initial attrs
+// send parameters 
 $init = array (
 	'uptime' => array (
 		'units' => ' days'
@@ -61,7 +61,8 @@ if (shell_exec('sensors')!==null)
 		'units' => '&deg;C',
 		'max' => 80,
 		'min' => 10,
-		'gradient' => 'negative'
+		'gradient' => 'negative',
+		'alarm' => true
 	);
 
 if (file_exists("/sys/class/net/$dev/speed"))
