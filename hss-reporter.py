@@ -3,13 +3,14 @@ import time
 import copy
 
 server = 'http://status/'
-server = 'http://requestb.in/182woa51'
 key    = 'grumpycheese'
 
 def init(payload):
+	payload.update({"key":key})
 	print requests.post(server+'init',data=payload).text
 
 def update(payload):
+	payload.update({"key":key})
 	print requests.post(server+'update',data=payload).text
 	
 # send some limits to define this platform
@@ -23,7 +24,6 @@ init({
 	"bandwidth": 200,
 	# is temperature supported? t/f (if so, updates are the highest temperature)
 	"temperature": True,
-	"key" :key
 })
 
 # in a loop, update the server
@@ -38,7 +38,6 @@ while True:
 		"bandwidth": 20,
 		# temp in degrees celcius
 		"temperature": 73,
-		"key" :key
 	})
 	time.sleep(1)
 
