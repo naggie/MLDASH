@@ -17,9 +17,9 @@ var state = {}
 app.use(express.bodyParser())
 
 app.post('/init', function(req, res) {
-	var ip = socket.handshake.address.address
+	var ip = req.connection.remoteAddress
 	getFqdn(ip,function(host,domain) {
-		status[host] = {
+		state[host] = {
 			Uptime : {
 				units : ' days'
 			},
@@ -41,7 +41,7 @@ app.post('/init', function(req, res) {
 		}
 
 		if (req.body.temperature)
-			status[host].Temperature = {
+			state[host].Temperature = {
 				units : '&deg;C',
 				max : 80,
 				gradient : 'negative',
@@ -50,13 +50,13 @@ app.post('/init', function(req, res) {
 			}
 
 		if (req.body.traffic)
-			status[host].Traffic = {
+			state[host].Traffic = {
 				units : 'Mbps',
 				max : req.body.traffic,
 				gradient : 'negative'
 			}
 
-		io.sockets.emit('refresh',status)
+		io.sockets.emit('refresh',state)
 
 		res.json({
 			success  : "Initialised server to pool",
