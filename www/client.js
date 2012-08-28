@@ -30,6 +30,7 @@ $(function(){
 
 	socket.on('title',function(title) {
 		$('#title').text(title)
+		document.title = title
 	})
 
 	socket.on('disconnect',function(){
