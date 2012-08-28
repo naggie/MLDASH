@@ -11,6 +11,7 @@ var app = express()
 var http = require('http')
 var server = http.createServer(app)
 var io = require('socket.io').listen(server)
+var dns = require('dns')
 
 server.listen( process.env.PORT||80 )
 
@@ -31,8 +32,10 @@ app.post('/init', function(req, res) {
 
 	var ip = req.connection.remoteAddress
 
-	getFqdn(ip,function(host,domain) {
+getFqdn(ip,function(err,host,domain) {
 		fqdns[ip] = [host,domain]
+
+
 
 		state[host] = {
 			Uptime : {
@@ -122,5 +125,13 @@ io.sockets.on('connection',function (socket) {
 
 // given an ip, callback with host and domain
 function getFqdn(ip,cb) {
-	cb(ip)
+	dns.reverse(ip,function(err,domains){
+		if (err || domains.length == 0) return cb(err)	
+
+		var parts = domains[0].split('.')
+		var host = parts.shift()
+		var domain = parts.join('.')
+
+		cb(null,host,domain)
+	})
 }
