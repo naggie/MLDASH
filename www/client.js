@@ -7,6 +7,9 @@ This is useful for updates.
 // TODO: enforce Number type in normaliser so that comparisons work correctly.
 */
 
+// time allowed (in milliseconds) before a group is considered dormant
+var dormant = 60*1000
+
 var socket = io.connect(undefined,{
 	'reconnection limit' : 4000,
 	'max reconnection attempts': Infinity
@@ -37,13 +40,21 @@ $(function(){
 		$('#splash').show().text('Network connection compromised')
 	})
 
-	socket.on('reconnect_failed',function(){
-		$('#splash').show().text('Reconnect failed')
-	})	
-
 	socket.on('reconnect',function(){
 		$('#splash').show().text('Reconnecting...')
 	})
+
+	// look for dormant attributes to empty
+	setInterval(function(){
+		$('.group tr').each(function(){
+			var updated = $(this).data('attr').updated.getTime()
+			var min = (new Date()).getTime - dormant
+
+			// not updated for a while, so blank
+			if (updated < min)
+				$('td',this).empty()
+		})	
+	},dormant/2)
 
 	alarm.init()
 })
@@ -119,6 +130,8 @@ ml.updateAttribute = function(attr){
 	// compute new attr based on old+delta
 	var prev = tr.data('attr')
 	if (prev) attr = $.extend({},prev,attr)
+
+	attr.updated = new Date()
 
 	// save new attr
 	tr.data('attr',attr)
