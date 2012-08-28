@@ -1,7 +1,7 @@
-import requests
 # TODO: Connection error handling, loop that
 # TODO: Real stats
 
+import requests
 import time
 import copy
 
@@ -17,30 +17,32 @@ def update(payload,mode="update"):
 # send some limits to define this platform
 update({
 	# memory in MB
-	"memory": 4096,
+	"Memory": 4096,
 	# total storage capacity in GB
-	"storage": 128,
+	"Storage": 128,
 	# total synchronous internet bandwidth in Mbps
 	# false if this is unknown
-	"bandwidth": 200,
+	"Traffic": 200,
 	# is temperature supported? t/f (if so, updates are the highest temperature)
-	"temperature": True,
+	"Temperature": True,
 },"init")
 
 # in a loop, update the server
 while True:
 	update({
 		# memory used in MB
-		"memory": 2321,
+		"Memory": 2321,
 		# total storage capacity in GB
-		"storage": 28,
+		"Storage": 28,
 		# total synchronous internet bandwidth in Mbps
 		# false if this is unknown
-		"bandwidth": 20,
+		"Traffic": 20,
 		# temp in degrees celcius
-		"temperature": 73,
+		"Temperature": 73,
 		# uptime in days
-		"uptime": 23
+		"Uptime": 23,
+		# 0-100 CPU load 
+		"Load": 92
 	})
 	time.sleep(1)
 

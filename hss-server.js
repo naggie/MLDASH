@@ -1,5 +1,8 @@
 // Listens for hss-reporter clients
 
+// TODO: rdns
+// TODO: rdns fail handling
+
 var key = 'grumpycheese'
 
 
@@ -13,12 +16,24 @@ server.listen( process.env.PORT||80 )
 
 // state to be synchronised with the client
 var state = {}
+var title = ''
+
+// dict of IP -> [host,domain]
+var fqdns = {}
 
 app.use(express.bodyParser())
 
 app.post('/init', function(req, res) {
+	if (req.body.key != key)
+		res.json({error:'Wrong API key'})
+	else
+		delete req.body.key
+
 	var ip = req.connection.remoteAddress
+
 	getFqdn(ip,function(host,domain) {
+		fqdns[ip] = [host,domain]
+
 		state[host] = {
 			Uptime : {
 				units : ' days'
@@ -30,17 +45,17 @@ app.post('/init', function(req, res) {
 			},
 			Storage : {
 				units : 'GB',
-				max : req.body.storage,
+				max : req.body.Storage,
 				gradient : 'negative'
 			},
 			Memory : {
 				units : 'MB',
-				max : req.body.memory,
+				max : req.body.Memory,
 				gradient : 'negative'
 			}
 		}
 
-		if (req.body.temperature)
+		if (req.body.Temperature)
 			state[host].Temperature = {
 				units : '&deg;C',
 				max : 80,
@@ -49,10 +64,10 @@ app.post('/init', function(req, res) {
 				alarm :true
 			}
 
-		if (req.body.traffic)
+		if (req.body.Traffic)
 			state[host].Traffic = {
 				units : 'Mbps',
-				max : req.body.traffic,
+				max : req.body.Traffic,
 				gradient : 'negative'
 			}
 
@@ -68,7 +83,21 @@ app.post('/init', function(req, res) {
 
 	
 app.post('/update', function(req, res){
-	res.end()
+	if (req.body.key != key)
+		res.json({error:'Wrong API key'})
+	else
+		delete req.body.key
+
+	var ip = req.connection.remoteAddress
+	var host = fqdns[ip][0]
+	var update = {}
+	update[host] = {}
+
+	for (var attr in req.body)
+		state[host][attr].value = update[host][attr] = req.body[attr]
+
+	io.sockets.emit('update',update)
+	res.json({success:'Updated'})
 })
 
 app.use(express.static(__dirname + '/www'))
@@ -85,9 +114,9 @@ io.set('transports', ['websocket','flashsocket','htmlfile','xhr-polling','jsonp-
 var initial = {}
 
 // new client
-io.sockets.on('connection',function (socket){
+io.sockets.on('connection',function (socket) {
 	socket.emit('refresh',state)
-	socket.emit('title','darksky.io server fleet')
+	socket.emit('title',title)
 })
 
 
