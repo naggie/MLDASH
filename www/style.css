@@ -68,10 +68,12 @@ max-height:10px;
 }
 
 #splash{
-position:absolute;
-top:40%;
+background:black;
+position:fixed;
+z-index:10000;
+padding-top:20%;
 text-align:center;
-left:0;right:0;
+left:0;right:0;top:0;bottom:0;
 }
 
 .alarm{
