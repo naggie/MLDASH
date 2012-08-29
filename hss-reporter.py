@@ -26,7 +26,8 @@ while True:
 			"Storage": 128,
 			# total synchronous internet bandwidth in Mbps
 			# false if this is unknown
-			"Traffic": 200,
+			"TX": 200,
+			"RX": 200,
 			# is temperature supported? t/f (if so, updates are the highest temperature)
 			"Temperature": True,
 		},"init")
@@ -47,7 +48,8 @@ while True:
 				"Storage": 28,
 				# total synchronous internet bandwidth in Mbps
 				# false if this is unknown
-				"Traffic": 20,
+				"TX": 200,
+				"RX": 200,
 				# temp in degrees celcius
 				"Temperature": 73,
 				# uptime in days

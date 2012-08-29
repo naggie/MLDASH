@@ -79,12 +79,18 @@ app.post('/init', function(req, res) {
 				alarm :true
 			}
 
-		if (req.body.Traffic)
-			state[host].Traffic = {
+		if (req.body.TX) {
+			state[host].TX = {
 				units : 'Mbps',
-				max : req.body.Traffic,
+				max : req.body.TX,
 				gradient : 'negative'
 			}
+			state[host].RX = {
+				units : 'Mbps',
+				max : req.body.RX,
+				gradient : 'negative'
+			}
+		}
 
 		io.sockets.emit('refresh',state,host+' connected')
 
