@@ -13,7 +13,7 @@ key    = 'banana'
 def update(payload,mode="update"):
 	"""Updates the server, initial or update depending on mode"""
 	payload.update({"key":key})
-	req = requests.post(server+mode,data=payload)
+	req = requests.post(server+mode,data=payload,timeout=10)
 	return req
 
 while True:
