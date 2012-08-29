@@ -17,6 +17,10 @@ var socket = io.connect(undefined,{
 
 var ml = {}
 
+// timeout for message, used to clear
+var splashTimeout
+
+
 // the defaults result in no bar graph -- set 'max' to make one
 ml.defaults = {
 	min:0,
@@ -65,7 +69,9 @@ ml.refresh = function(state,reason) {
 	
 	if (typeof reason != 'undefined') {
 		$('#splash').show().text(reason)
-		setTimeout(function(){
+
+		clearTimeout(splashTimeout)
+		splashTimeout = setTimeout(function(){
 			$('#splash').hide()
 		},2000)
 	}
