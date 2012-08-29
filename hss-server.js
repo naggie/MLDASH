@@ -91,7 +91,8 @@ app.post('/init', function(req, res) {
 		res.json({
 			success  : "Initialised server to pool",
 			hostname : host,
-			domain   : domain
+			domain   : domain,
+			ip : ip
 		})
 	})
 })
@@ -142,9 +143,10 @@ function getFqdn(ip,cb) {
 	dns.reverse(ip,function(err,domains){
 		if (err) return cb(err)	
 
-		if (ip == '127.0.0.1') return cb(null,os.hostname(),null,null)
-
-		if (domains.length == 0) return cb(true)	
+		if (ip == '127.0.0.1')
+			domains = [os.hostname()]
+		else if (domains.length == 0)
+			return cb(true)	
 
 		var parts = domains[0].split('.')
 		var host = parts.shift() || null
