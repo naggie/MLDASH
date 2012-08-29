@@ -1,13 +1,16 @@
-# TODO: Connection error handling, loop that
-# TODO: Real stats
+# TODO: non-indo handling (eg, can't get data) 
 
 import requests
 import time
 import datetime
 import copy
 
-server = 'http://localhost/'
+import sysinfo
+
+server = 'http://snorlax/'
+#server = 'http://localhost/'
 #server = 'http://status/'
+
 key    = 'banana'
 
 def update(payload,mode="update"):
@@ -21,7 +24,7 @@ while True:
 		# send some limits to define this platform
 		req = update({
 			# memory in MB
-			"Memory": 4096,
+			"Memory": sysinfo.totalMemory(),
 			# total storage capacity in GB
 			"Storage": 128,
 			# total synchronous internet bandwidth in Mbps
@@ -43,7 +46,7 @@ while True:
 		while True:
 			req = update({
 				# memory used in MB
-				"Memory": 2321,
+				"Memory": sysinfo.usedMemory(),
 				# total storage capacity in GB
 				"Storage": 28,
 				# total synchronous internet bandwidth in Mbps
@@ -53,7 +56,7 @@ while True:
 				# temp in degrees celcius
 				"Temperature": 73,
 				# uptime in days
-				"Uptime": 23,
+				"Uptime": sysinfo.uptime(),
 				# 0-100 CPU load 
 				"Load": 92
 			})
