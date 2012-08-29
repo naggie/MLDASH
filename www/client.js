@@ -60,9 +60,12 @@ $(function(){
 })
 
 // initially (re)construct the groups, given a full state
-ml.refresh = function(state){
+ml.refresh = function(state) {
 	$('#splash').hide()
 	var context = $('#stats').empty()
+
+	if (!Object.keys(state).length)
+		return $('#splash').show().text('No servers online')
 
 	state = ml.normalise(state)
 

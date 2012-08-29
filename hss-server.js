@@ -23,7 +23,7 @@ server.listen( process.env.PORT||80 )
 var state = {}
 var title = ''
 
-// dict of IP -> [host,domain]
+// dict of IP -> [host,domain,host.domain]
 var fqdns = {}
 
 // object, host -> date last updated
