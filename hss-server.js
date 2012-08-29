@@ -86,7 +86,7 @@ app.post('/init', function(req, res) {
 				gradient : 'negative'
 			}
 
-		io.sockets.emit('refresh',state)
+		io.sockets.emit('refresh',state,host+' connected')
 
 		res.json({
 			success  : "Initialised server to pool",
@@ -163,7 +163,7 @@ setInterval(function(){
 		if ( updated[host].getTime() < min) {
 			// remove host and tell clients
 			delete state[host]
-			io.sockets.emit('refresh',state)
+			io.sockets.emit('refresh',state,host+' disconnected')
 		}
 	}
 },max_dormant*500)
