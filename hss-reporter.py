@@ -12,7 +12,10 @@ key    = 'grumpycheese'
 def update(payload,mode="update"):
 	"""Updates the server, initial or update depending on mode"""
 	payload.update({"key":key})
-	print requests.post(server+mode,data=payload).text
+	req = requests.post(server+mode,data=payload)
+	print req.text
+	req.raise_for_status()
+	return req
 
 while True:
 	try:
@@ -47,8 +50,10 @@ while True:
 				"Load": 92
 			})
 			time.sleep(1)
-	except:
+
+	except (requests.HTTPError,requests.ConnectionError, requests.Timeout) as e:
 		print
-		print "Problem with "+server
+		print e
+	finally:
 		print "Reconnecting in 4 seconds..."
 		time.sleep(4)

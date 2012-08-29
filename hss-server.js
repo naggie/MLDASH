@@ -1,9 +1,9 @@
 // Listens for hss-reporter clients
 
-// TODO: rdns
+// TODO: exceptions
 // TODO: rdns fail handling
 
-var key = 'grumpycheese'
+var key = 'grumpycheedse'
 
 
 var express = require('express')
@@ -26,7 +26,7 @@ app.use(express.bodyParser())
 
 app.post('/init', function(req, res) {
 	if (req.body.key != key)
-		res.json({error:'Wrong API key'})
+		return res.json(403,{error:'Wrong API key'})
 	else
 		delete req.body.key
 
