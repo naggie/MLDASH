@@ -37,11 +37,7 @@ $(function(){
 	})
 
 	socket.on('disconnect',function(){
-		$('#splash').show().text('Network connection compromised')
-	})
-
-	socket.on('reconnect',function(){
-		$('#splash').show().text('Reconnecting...')
+		$('#splash').show().text('Connection lost')
 	})
 
 	// look for dormant attributes to empty
