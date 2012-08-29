@@ -163,6 +163,7 @@ setInterval(function(){
 		if ( updated[host].getTime() < min) {
 			// remove host and tell clients
 			delete state[host]
+			delete updated[host]
 
 			// remove the entry from the DNS cache
 			for (var ip in fqdns)
