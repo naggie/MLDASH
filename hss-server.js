@@ -12,6 +12,7 @@ var http = require('http')
 var server = http.createServer(app)
 var io = require('socket.io').listen(server)
 var dns = require('dns')
+var os = require('os')
 
 server.listen( process.env.PORT||80 )
 
@@ -32,9 +33,10 @@ app.post('/init', function(req, res) {
 
 	var ip = req.connection.remoteAddress
 
-getFqdn(ip,function(err,host,domain) {
-		fqdns[ip] = [host,domain]
+	getFqdn(ip,function(err,host,domain,fqdn) {
+		if (err) return res.json(404,{error:"Could not find DNS hostname"})
 
+		fqdns[ip] = [host,domain]
 
 
 		state[host] = {
@@ -123,15 +125,19 @@ io.sockets.on('connection',function (socket) {
 })
 
 
-// given an ip, callback with host and domain
+// given an ip, callback with host and domain and fqdn
 function getFqdn(ip,cb) {
 	dns.reverse(ip,function(err,domains){
-		if (err || domains.length == 0) return cb(err)	
+		if (err) return cb(err)	
+
+		if (ip == '127.0.0.1') return cb(null,os.hostname(),null,null)
+
+		if (domains.length == 0) return cb(true)	
 
 		var parts = domains[0].split('.')
-		var host = parts.shift()
-		var domain = parts.join('.')
+		var host = parts.shift() || null
+		var domain = parts.join('.') || null
 
-		cb(null,host,domain)
+		cb(null,host,domain,domains[0])
 	})
 }
