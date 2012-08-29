@@ -3,6 +3,7 @@
 
 import requests
 import time
+import datetime
 import copy
 
 server = 'http://localhost/'
@@ -34,7 +35,8 @@ while True:
 		req.raise_for_status()
 
 
-		print "Online."
+		print "Online",
+		print datetime.datetime.now()
 
 		# in a loop, update the server
 		while True:
