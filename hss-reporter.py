@@ -34,7 +34,7 @@ while True:
 		print req.text
 		req.raise_for_status()
 
-
+		print
 		print "Online",
 		print datetime.datetime.now()
 
@@ -66,5 +66,7 @@ while True:
 		print
 		print e
 	finally:
+		print
 		print "Reconnecting in 4 seconds..."
+		print
 		time.sleep(4)
