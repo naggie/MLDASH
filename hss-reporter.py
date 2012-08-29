@@ -13,14 +13,12 @@ def update(payload,mode="update"):
 	"""Updates the server, initial or update depending on mode"""
 	payload.update({"key":key})
 	req = requests.post(server+mode,data=payload)
-	print req.text
-	req.raise_for_status()
 	return req
 
 while True:
 	try:
 		# send some limits to define this platform
-		update({
+		req = update({
 			# memory in MB
 			"Memory": 4096,
 			# total storage capacity in GB
@@ -32,9 +30,15 @@ while True:
 			"Temperature": True,
 		},"init")
 
+		print req.text
+		req.raise_for_status()
+
+
+		print "Online."
+
 		# in a loop, update the server
 		while True:
-			update({
+			req = update({
 				# memory used in MB
 				"Memory": 2321,
 				# total storage capacity in GB
@@ -49,6 +53,11 @@ while True:
 				# 0-100 CPU load 
 				"Load": 92
 			})
+
+			if req.status_code != requests.codes.ok:
+				print req.text
+
+			req.raise_for_status()
 			time.sleep(1)
 
 	except (requests.HTTPError,requests.ConnectionError, requests.Timeout) as e:
