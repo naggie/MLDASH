@@ -5,6 +5,9 @@
 
 var key = 'banana'
 
+// shared domain name for servers, or false if servers
+// no not have a common domain name
+var common_domain = false
 
 var express = require('express')
 var app = express()
@@ -23,6 +26,14 @@ var title = ''
 // dict of IP -> [host,domain]
 var fqdns = {}
 
+// object, host -> date last updated
+// to find dormant servers 
+var updated = {}
+
+// maximum time in seconds a server can go quiet for without
+// removing it
+var max_dormant = 30
+
 app.use(express.bodyParser())
 
 app.post('/init', function(req, res) {
@@ -36,8 +47,7 @@ app.post('/init', function(req, res) {
 	getFqdn(ip,function(err,host,domain,fqdn) {
 		if (err) return res.json(404,{error:"Could not find DNS hostname"})
 
-		fqdns[ip] = [host,domain]
-
+		fqdns[ip] = [host,domain,fqdn]
 
 		state[host] = {
 			Uptime : {
@@ -98,6 +108,8 @@ app.post('/update', function(req, res){
 	var update = {}
 	update[host] = {}
 
+	updated[host] = new Date()
+
 	for (var attr in req.body)
 		state[host][attr].value = update[host][attr] = req.body[attr]
 
@@ -141,3 +153,17 @@ function getFqdn(ip,cb) {
 		cb(null,host,domain,domains[0])
 	})
 }
+
+
+// look for dormant servers and remove them
+setInterval(function(){
+	for (var host in updated) {
+		var min = (new Date()).getTime() - max_dormant*1000
+
+		if ( updated[host].getTime() < min) {
+			// remove host and tell clients
+			delete state[host]
+			io.sockets.emit('refresh',state)
+		}
+	}
+},max_dormant*500)
