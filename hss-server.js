@@ -32,7 +32,7 @@ var updated = {}
 
 // maximum time in seconds a server can go quiet for without
 // removing it
-var max_dormant = 30
+var max_dormant = 10
 
 app.use(express.bodyParser())
 
