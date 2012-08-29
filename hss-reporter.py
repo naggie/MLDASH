@@ -7,7 +7,7 @@ import copy
 
 server = 'http://localhost/'
 #server = 'http://status/'
-key    = 'grumpycheese'
+key    = 'banana'
 
 def update(payload,mode="update"):
 	"""Updates the server, initial or update depending on mode"""

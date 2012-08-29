@@ -3,7 +3,7 @@
 // TODO: exceptions
 // TODO: rdns fail handling
 
-var key = 'grumpycheedse'
+var key = 'banana'
 
 
 var express = require('express')
