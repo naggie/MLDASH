@@ -20,6 +20,12 @@ var ml = {}
 // timeout for message, used to clear
 var splashTimeout
 
+// nice noise
+var ping = document.createElement('audio')
+ping.src = 'ping.ogg'
+ping.load()
+
+
 
 // the defaults result in no bar graph -- set 'max' to make one
 ml.defaults = {
@@ -69,6 +75,9 @@ ml.refresh = function(state,reason) {
 	
 	if (typeof reason != 'undefined') {
 		$('#splash').show().text(reason)
+
+		ping.play()
+		ping.currentTime = 0
 
 		clearTimeout(splashTimeout)
 		splashTimeout = setTimeout(function(){
