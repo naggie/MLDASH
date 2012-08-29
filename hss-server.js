@@ -163,6 +163,12 @@ setInterval(function(){
 		if ( updated[host].getTime() < min) {
 			// remove host and tell clients
 			delete state[host]
+
+			// remove the entry from the DNS cache
+			for (var ip in fqdns)
+				if (fqdns[0] == host)
+					delete fqdns[ip]
+
 			io.sockets.emit('refresh',state,host+' disconnected')
 		}
 	}
