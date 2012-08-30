@@ -7,9 +7,9 @@ import copy
 
 import sysinfo
 
-server = 'http://snorlax/'
+#server = 'http://snorlax/'
 #server = 'http://localhost/'
-#server = 'http://status/'
+server = 'http://status/'
 
 key    = 'banana'
 
