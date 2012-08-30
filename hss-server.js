@@ -68,7 +68,6 @@ app.post('/init', function(req, res) {
 				max : req.body.Memory,
 				gradient : 'negative'
 			},
-
 			Temperature : {
 				units : '&deg;C',
 				max : 80,
@@ -111,8 +110,18 @@ app.post('/update', function(req, res){
 
 	updated[host] = new Date()
 
+	// set new max values for RX and TX, and value
+	state[host].TX.max = Math.max(state[host].TX.max,req.body.TX)
+	state[host].TX.max = Math.max(state[host].TX.max,req.body.TX)
+
+	// update the remaining
 	for (var attr in req.body)
 		state[host][attr].value = update[host][attr] = req.body[attr]
+	
+	// send new max values perhapswhynot
+	// as long-hand update. Make it conditional later.
+	update[host].TX = state[host].TX
+	update[host].RX = state[host].RX
 
 	io.sockets.emit('update',update)
 	res.json({success:'Updated'})
