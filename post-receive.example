@@ -1,5 +1,7 @@
 #!/bin/bash
 # example deployment with forever and git
+# comment out hss-server if this is a client
+
 export GIT_WORK_TREE=~/MLDASH/ 
 git checkout -f
 
@@ -9,7 +11,7 @@ forever stop hss-server.js
 forever start hss-server.js
 
 forever stop hss-reporter.py
-forever -c python start hss-reporter.py
+NDEV=eth0 forever -c python start hss-reporter.py
 
 # to host on port 80 as non-root:
 # sudo apt-get install libcap2-bin
