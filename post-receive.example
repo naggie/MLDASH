@@ -5,8 +5,8 @@ git checkout -f
 
 cd $GIT_WORK_TREE
 
-forever stop dumb-api-server.js
-forever start dumb-api-server.js
+forever stop hss-server.js
+forever start hss-server.js
 
 # to host on port 80 as non-root:
 # sudo apt-get install libcap2-bin
