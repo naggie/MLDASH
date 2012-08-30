@@ -8,6 +8,9 @@ cd $GIT_WORK_TREE
 forever stop hss-server.js
 forever start hss-server.js
 
+forever stop hss-reporter.py
+forever -c python start hss-reporter.py
+
 # to host on port 80 as non-root:
 # sudo apt-get install libcap2-bin
 # setcap 'cap_net_bind_service=+ep' /usr/bin/node
