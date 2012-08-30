@@ -83,12 +83,10 @@ app.post('/init', function(req, res) {
 			state[host].TX = {
 				units : 'Mbps',
 				max : req.body.TX,
-				gradient : 'negative'
 			}
 			state[host].RX = {
 				units : 'Mbps',
 				max : req.body.RX,
-				gradient : 'negative'
 			}
 		}
 
