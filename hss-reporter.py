@@ -21,7 +21,7 @@ def update(payload,mode="update"):
 
 while True:
 	try:
-		traffic = sysinfo.traffic('ss.eth0')
+		traffic = sysinfo.traffic('eth1')
 
 		# send some limits to define this platform
 		req = update({
