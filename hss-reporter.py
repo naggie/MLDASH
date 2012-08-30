@@ -21,16 +21,18 @@ def update(payload,mode="update"):
 
 while True:
 	try:
+		traffic = sysinfo.traffic('eth1')
+
 		# send some limits to define this platform
 		req = update({
 			# memory in MB
-			"Memory": sysinfo.totalMemory(),
+			"Memory": int(sysinfo.memory()["total"]/1024),
 			# total storage capacity in GB
-			"Storage": 128,
+			"Storage": int(sysinfo.storage()["total"]/1048576),
 			# total synchronous internet bandwidth in Mbps
 			# false if this is unknown
-			"TX": 200,
-			"RX": 200,
+			"TX": 10,
+			"RX": 10,
 			# is temperature supported? t/f (if so, updates are the highest temperature)
 			"Temperature": True,
 		},"init")
@@ -46,25 +48,26 @@ while True:
 		while True:
 			req = update({
 				# memory used in MB
-				"Memory": sysinfo.usedMemory(),
+				"Memory": int(sysinfo.memory()["used"]/1024),
 				# total storage capacity in GB
-				"Storage": 28,
+				"Storage": int(sysinfo.storage()["used"]/1048576),
 				# total synchronous internet bandwidth in Mbps
 				# false if this is unknown
-				"TX": 200,
-				"RX": 200,
+				"TX": int(traffic.tx/131072),
+				"RX": int(traffic.rx/131072),
 				# temp in degrees celcius
-				"Temperature": 73,
+				"Temperature": sysinfo.temperature(),
 				# uptime in days
-				"Uptime": sysinfo.uptime(),
+				"Uptime": (sysinfo.uptime()/84600),
 				# 0-100 CPU load 
-				"Load": 92
+				"Load": sysinfo.load() 
 			})
 
 			if req.status_code != requests.codes.ok:
 				print req.text
 
 			req.raise_for_status()
+			traffic.update()
 			time.sleep(1)
 
 	except (requests.HTTPError,requests.ConnectionError, requests.Timeout) as e:

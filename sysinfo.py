@@ -8,14 +8,14 @@ import os
 from time import time
 
 def memory():
-	"Total and free mem in byes"
+	"Total and free mem in kilobytes"
 	free = commands.getstatusoutput("free | grep 'Mem:'")
 
 	if free[0]:
 		raise Exception('free is not installed')
 
 	numbers = re.findall(r"(\d+)",free[1])
-	print numbers
+
 	if not numbers:
 		raise Exception('Invalid output from free command')
 
@@ -61,7 +61,7 @@ def load():
 
 
 def storage():
-        "Return used and total disk space in GB"
+        "Return used and total disk space in kilobytes"
         df = commands.getstatusoutput('df --total | grep total')
 
         if df[0]:
@@ -75,13 +75,9 @@ def storage():
         total = int(bits[0])
         used = int(bits[1])
 
-        # convert to GB
-        total = int(total/1048576)
-        used = int(used/1048576)
-
         return {
-                "use" : used,
-                "total": total
+                "total": total,
+                "used" : used
         }
 
 
@@ -102,8 +98,8 @@ class traffic:
 
 
         def __init__(self,dev='eth0'):
-                self.tx_file = "/sys/class/net/%s/statistics/tx_bytes" % (dev)
-                self.rx_file = "/sys/class/net/%s/statistics/rx_bytes" % (dev)
+                self.tx_file = "/sys/class/net/%s/statistics/tx_bytes" % dev
+                self.rx_file = "/sys/class/net/%s/statistics/rx_bytes" % dev
 
                 if not path.exists(self.tx_file):
                         raise Exception("Could not find stats files for %s" % dev)
@@ -154,7 +150,7 @@ class traffic:
 
                 return bytes
 
-def maxTemp():
+def temperature():
 	"""
 	gets the hottest temperature integer in degrees celcius. Requires lm-sensors to be configured
 	Warn: some modules may produce garbage temperatures.
@@ -169,7 +165,7 @@ def maxTemp():
 		raise Exception('lm-sensors is not installed')
 
 	temps = re.findall(r"(\d{2}.\d+)",sensors[1],re.M)
-	print temps
+
 	if not temps:
 		raise Exception('Invalid output from sensors command')
 
