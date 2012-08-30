@@ -4,6 +4,7 @@ import multiprocessing
 import commands
 import re
 from os import path
+import os
 from time import time
 
 def totalMemory():
@@ -49,22 +50,13 @@ def startupTime():
 
 
 def load():
-        "return load normalised to 100"
-        uptime = commands.getstatusoutput('uptime')
+        "return load (avg num of processes waiting per processor) normalised to 100"
 
-        if uptime[0]:
-                raise Exception('Failed to run uptime command')
-
-        bits = re.findall(r"(\d\.\d{2})",uptime[1])
-
-        if not bits:
-                raise Exception('Invalid output from uptime command')
-
-        load = bits[0]
-        load = float(load)
+        load = os.getloadavg()[0] 
         load = load/multiprocessing.cpu_count()
+	load = int(load*100)
 
-        return int(load*100)
+        return load
 
 
 def storage():
