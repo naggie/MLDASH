@@ -4,7 +4,7 @@ import requests
 import time
 import datetime
 import copy
-
+import os
 import sysinfo
 
 #server = 'http://snorlax/'
@@ -21,7 +21,7 @@ def update(payload,mode="update"):
 
 while True:
 	try:
-		traffic = sysinfo.traffic('eth1')
+		traffic = sysinfo.traffic(os.getenv('NDEV') or 'eth0')
 
 		# send some limits to define this platform
 		req = update({
