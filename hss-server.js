@@ -50,8 +50,10 @@ app.post('/init', function(req, res) {
 		fqdns[ip] = [host,domain,fqdn]
 
 		// replace with something clever FIXME TODO
-		title = domain
-		io.sockets.emit('title',title)
+		if (domain) {
+			title = domain
+			io.sockets.emit('title',title)
+		}
 
 		state[host] = {
 			Uptime : {
