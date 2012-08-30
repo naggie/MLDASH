@@ -118,7 +118,7 @@ app.post('/update', function(req, res){
 
 	// set new max values for RX and TX, and value
 	state[host].TX.max = Math.max(state[host].TX.max,req.body.TX)
-	state[host].TX.max = Math.max(state[host].TX.max,req.body.TX)
+	state[host].RX.max = Math.max(state[host].RX.max,req.body.RX)
 
 	// update the remaining
 	for (var attr in req.body)
