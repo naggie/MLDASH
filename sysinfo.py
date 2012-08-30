@@ -7,45 +7,46 @@ from os import path
 import os
 from time import time
 
-def totalMemory():
-	"Total mem in MB"
-	try:
-		mem = commands.getstatusoutput("free -m | grep 'Mem:' | awk '{print $2}'")
-		mem = int(mem[1])
-	except:
-		return False
-	return mem
+def memory():
+	"Total and free mem in byes"
+	free = commands.getstatusoutput("free | grep 'Mem:'")
 
+	if free[0]:
+		raise Exception('free is not installed')
 
-def usedMemory():
-	"Memory used in MB"
-	try:
-		mem = commands.getstatusoutput("free -m | grep -E '\-\/\+' | awk '{print $3}'")
-		mem = int(mem[1])
-	except:
-		return False
-	return mem
+	numbers = re.findall(r"(\d+)",free[1])
+	print numbers
+	if not numbers:
+		raise Exception('Invalid output from free command')
+
+	for i,number in enumerate(numbers):
+		numbers[i] = int(number)
+
+	return {
+		"total" : numbers[0],
+		"used"  : numbers[1]
+	}
 
 
 def uptime():
-	"Uptime in days"
-	try:
-		f = open('/proc/uptime','r')
-		line = f.readline()
-		f.close()
-
-		seconds = line.partition(' ')[0]
-		seconds = float(seconds)
-		seconds = int(seconds)
-
-	except:
-		return False
+	"Uptime in seconds"
 	
-	return int(seconds/86400)
+	if not path.exists('/proc/uptime'):
+		raise Exception('/proc/uptime not found')
 
-def startupTime():
+	f = open('/proc/uptime','r')
+	line = f.readline()
+	f.close()
+
+	seconds = line.partition(' ')[0]
+	seconds = float(seconds)
+	seconds = int(seconds)
+
+	return seconds
+
+def started():
 	"Unix time when the server was started"
-	pass
+	return int( time() - uptime() )
 
 
 
@@ -87,7 +88,7 @@ def storage():
 
 class traffic:
         "Calculates traffic for given device in bytes per second. Call update() regularly, read tx and rx"
-        last_time = time()
+        last_time = 0
         last_tx_bytes = 0
         last_rx_bytes = 0
 
@@ -105,8 +106,9 @@ class traffic:
                 self.rx_file = "/sys/class/net/%s/statistics/rx_bytes" % (dev)
 
                 if not path.exists(self.tx_file):
-                        raise Exception("Could not find stats files for " % dev)
+                        raise Exception("Could not find stats files for %s" % dev)
 
+		last_time = time()
                 self.update()
 
 
@@ -153,30 +155,27 @@ class traffic:
                 return bytes
 
 def maxTemp():
-        """
-                gets the hottest temperature integer in degrees celcius. Requires lm-sensors to be configured
-                Warn: some modules may produce garbage temperatures.
-                Configure those out, or don't load that module
-        """
-        sensors = commands.getstatusoutput('sensors -u | grep _input')
+	"""
+	gets the hottest temperature integer in degrees celcius. Requires lm-sensors to be configured
+	Warn: some modules may produce garbage temperatures.
+	Configure those out, or don't load that module
+	"""
+	sensors = commands.getstatusoutput('sensors -u | grep -E temp[0-9]_input')
 
-        if sensors[0] == 1:
-                raise Exception('lm-sensors is not setup. Run sensors-detect')
+	if sensors[0] == 1:
+		raise Exception('lm-sensors is not setup. Run sensors-detect')
 
-        if sensors[0] == 127:
-                raise Exception('lm-sensors is not installed')
+	if sensors[0] == 127:
+		raise Exception('lm-sensors is not installed')
 
-        temps = re.findall(r"(\d+.\d+)",sensors[1],re.M)
+	temps = re.findall(r"(\d{2}.\d+)",sensors[1],re.M)
+	print temps
+	if not temps:
+		raise Exception('Invalid output from sensors command')
 
-        if not temps:
-                raise Exception('Invalid output from sensors command')
+	for i,temp in enumerate(temps):
+		temps[i] = float(temp)
+		temps[i] = int(temps[i])
 
-        for i,temp in enumerate(temps):
-                temps[i] = float(temp)
-                temps[i] = int(temps[i])
-
-        return max(temps)
-
-
-
+	return max(temps)
 
