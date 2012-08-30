@@ -29,12 +29,6 @@ while True:
 			"Memory": int(sysinfo.memory()["total"]/1024),
 			# total storage capacity in GB
 			"Storage": int(sysinfo.storage()["total"]/1048576),
-			# total synchronous internet bandwidth in Mbps
-			# false if this is unknown
-			"TX": 10,
-			"RX": 10,
-			# is temperature supported? t/f (if so, updates are the highest temperature)
-			"Temperature": True,
 		},"init")
 
 		print req.text

@@ -67,26 +67,22 @@ app.post('/init', function(req, res) {
 				units : 'MB',
 				max : req.body.Memory,
 				gradient : 'negative'
-			}
-		}
+			},
 
-		if (req.body.Temperature)
-			state[host].Temperature = {
+			Temperature : {
 				units : '&deg;C',
 				max : 80,
 				gradient : 'negative',
 				min : 15,
 				alarm :true
-			}
-
-		if (req.body.TX) {
-			state[host].TX = {
+			},
+			TX : {
 				units : 'Mbps',
-				max : req.body.TX,
-			}
-			state[host].RX = {
+				max : 10
+			},
+			RX : {
 				units : 'Mbps',
-				max : req.body.RX,
+				max : 10
 			}
 		}
 
