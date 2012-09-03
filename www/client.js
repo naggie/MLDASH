@@ -180,10 +180,10 @@ ml.updateAttribute = function(attr){
 			&& (attr.value > attr.max 
 			|| attr.value < attr.min)
 		){
-			$('th',tr).addClass('alarm')
+			$(tr).addClass('alarm')
 			$('.value',tr).append('!')
 		}else
-			$('th',tr).removeClass('alarm')
+			$(tr).removeClass('alarm')
 	}
 
 }

@@ -6,6 +6,7 @@ import datetime
 import copy
 import os
 import sysinfo
+from socket import getfqdn 
 
 #server = 'http://snorlax/'
 #server = 'http://localhost/'
@@ -26,9 +27,10 @@ while True:
 		# send some limits to define this platform
 		req = update({
 			# memory in MB
-			"Memory": int(sysinfo.memory()["total"]/1024),
+			"Memory" : int(sysinfo.memory()["total"]/1024),
 			# total storage capacity in GB
-			"Storage": int(sysinfo.storage()["total"]/1048576),
+			"Storage" : int(sysinfo.storage()["total"]/1048576),
+			"fqdn" : getfqdn(),
 		},"init")
 
 		print req.text
@@ -52,7 +54,7 @@ while True:
 				# temp in degrees celcius
 				"Temperature": sysinfo.temperature(),
 				# uptime in days
-				"Uptime": (sysinfo.uptime()/84600),
+				"Uptime": int(sysinfo.uptime()/84600),
 				# 0-100 CPU load 
 				"Load": sysinfo.load() 
 			})
@@ -72,3 +74,4 @@ while True:
 		print "Reconnecting in 4 seconds..."
 		print
 		time.sleep(4)
+
