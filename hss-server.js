@@ -42,9 +42,7 @@ app.post('/init', function(req, res) {
 	else
 		delete req.body.key
 
-	var ip = req.connection.remoteAddress
-
-	getFqdn(ip,function(err,host,domain,fqdn) {
+	getFqdn(req,function(err,host,domain,fqdn) {
 		if (err) return res.json(404,{error:"Could not find DNS hostname"})
 
 		fqdns[ip] = [host,domain,fqdn]
@@ -153,13 +151,16 @@ io.sockets.on('connection',function (socket) {
 })
 
 
-// given an ip, callback with host and domain and fqdn
-function getFqdn(ip,cb) {
+// given a HTTP request object, callback with host, domain and fqdn
+function getFqdn(req,cb) {
+	var ip = req.connection.remoteAddress
+
 	dns.reverse(ip,function(err,domains){
 		if (err) return cb(err)	
 
+		// proxy or local
 		if (ip == '127.0.0.1')
-			domains = [os.hostname()]
+			domains = [req.body.fqdn]
 		else if (domains.length == 0)
 			return cb(true)	
 
