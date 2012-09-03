@@ -42,6 +42,8 @@ app.post('/init', function(req, res) {
 	else
 		delete req.body.key
 
+	var ip = req.connection.remoteAddress
+
 	getFqdn(req,function(err,host,domain,fqdn) {
 		if (err) return res.json(404,{error:"Could not find DNS hostname"})
 
