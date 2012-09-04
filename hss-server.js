@@ -44,10 +44,10 @@ app.post('/init', function(req, res) {
 
 	var ip = req.connection.remoteAddress
 
-	getFqdn(req,function(err,host,domain,fqdn) {
+	getFqdn(req,function(err,fqdn) {
 		if (err) return res.json(404,{error:"Could not find DNS hostname"})
 
-		var parts = domain.split('.')
+		var parts = fqdn.split('.')
 		var host = parts.shift() || null
 		var domain = parts.join('.') || null
 
@@ -165,12 +165,12 @@ function getFqdn(req,cb) {
 		if (err) return cb(err)	
 
 		// proxy or local
-		if (ip == '127.0.0.1')
+		if (ip == '127.0.0.1' && req.body.fqdn)
 			domains = [req.body.fqdn]
 		else if (domains.length == 0)
 			return cb(true)	
 
-		cb(null,host)
+		cb(null,domains[0])
 	})
 }
 
