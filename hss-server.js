@@ -47,6 +47,10 @@ app.post('/init', function(req, res) {
 	getFqdn(req,function(err,host,domain,fqdn) {
 		if (err) return res.json(404,{error:"Could not find DNS hostname"})
 
+		var parts = domain.split('.')
+		var host = parts.shift() || null
+		var domain = parts.join('.') || null
+
 		fqdns[ip] = [host,domain,fqdn]
 
 		// replace with something clever FIXME TODO
@@ -166,11 +170,7 @@ function getFqdn(req,cb) {
 		else if (domains.length == 0)
 			return cb(true)	
 
-		var parts = domains[0].split('.')
-		var host = parts.shift() || null
-		var domain = parts.join('.') || null
-
-		cb(null,host,domain,domains[0])
+		cb(null,host)
 	})
 }
 
