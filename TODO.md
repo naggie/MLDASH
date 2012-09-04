@@ -14,7 +14,6 @@
   * Latency (clientside ping)
 
 
-
 ## Download dashboard
 
 Showing all usenet and bittorrent downloads with bitorrent, they should nicely vanish and manifest.
