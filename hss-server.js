@@ -169,7 +169,7 @@ function getFqdn(req,cb) {
 		else if (domains.length == 0)
 			return cb(true)	
 
-		var parts = domains.split('.')
+		var parts = domains[0].split('.')
 
 		var host = {
 			host : parts.shift() || null,
