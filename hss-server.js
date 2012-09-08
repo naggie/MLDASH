@@ -177,7 +177,7 @@ function getFqdn(req,cb) {
 		var parts = domains[0].split('.')
 
 		var host = {
-			host : parts.shift() || null,
+			name : parts.shift() || null,
 			domain : parts.join('.') || null,
 			fqdn : domains[0],
 		}
