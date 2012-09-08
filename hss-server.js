@@ -23,8 +23,8 @@ server.listen( process.env.PORT||80 )
 var state = {}
 var title = ''
 
-// dict of IP -> [host,domain,host.domain]
-var fqdns = {}
+// dict of IP -> {host,domain,fqdn}
+var dnsCache = {}
 
 // object, host -> date last updated
 // to find dormant servers 
@@ -44,7 +44,8 @@ app.post('/init', function(req, res) {
 
 	var ip = req.connection.remoteAddress
 	// remove cached DNS name
-	delete fqdns[ip]
+	delete dnsCache[ip]
+
 
 	getFqdn(req,function(err,host) {
 		if (err) return res.json(404,{error:"Could not find DNS hostname"})
@@ -121,8 +122,7 @@ app.post('/update', function(req, res){
 		state[host.name].RX.max = Math.max(state[host.name].RX.max,req.body.RX)
 
 		// update the remaining
-		// TODO: this all explicitly so this is not necessary:
-		delete req.body.fqdn
+		// TODO: this all explicitly
 		for (var attr in req.body)
 			state[host.name][attr].value = update[host.name][attr] = req.body[attr]
 		
@@ -162,15 +162,15 @@ function getFqdn(req,cb) {
 	var ip = req.connection.remoteAddress
 
 	// cached?
-	if (fqdns[ip])
-		return cb(null,fqdns[ip])
+	if (dnsCache[ip])
+		return cb(null,dnsCache[ip])
 
 	dns.reverse(ip,function(err,domains){
 		if (err) return cb(err)	
 
 		// proxy or local
-		if (ip == '127.0.0.1' && req.body.fqdn)
-			domains = [req.body.fqdn]
+		if (ip == '127.0.0.1')
+			domains = [os.hostname()]
 		else if (domains.length == 0)
 			return cb(true)	
 
@@ -183,7 +183,7 @@ function getFqdn(req,cb) {
 		}
 
 		// cache
-		fqdns[ip] = host
+		dnsCache[ip] = host
 
 		cb(null,host)
 	})
@@ -201,9 +201,9 @@ setInterval(function(){
 			delete updated[host]
 
 			// remove the entry from the DNS cache
-			for (var ip in fqdns)
-				if (fqdns[0] == host)
-					delete fqdns[ip]
+			for (var ip in dnsCache)
+				if (dnsCache[0] == host)
+					delete dnsCache[ip]
 
 			io.sockets.emit('refresh',state,host+' disconnected')
 		}
