@@ -51,7 +51,7 @@ app.post('/init', function(req, res) {
 
 		// replace with something clever FIXME TODO
 		if (host.domain) {
-			title = domain
+			title = host.domain
 			io.sockets.emit('title',title)
 		}
 
