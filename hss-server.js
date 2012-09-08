@@ -95,7 +95,7 @@ app.post('/init', function(req, res) {
 
 		res.json({
 			success  : "Initialised server to pool",
-			hostname : host.name;
+			hostname : host.name,
 			domain   : host.domain,
 		})
 	})
