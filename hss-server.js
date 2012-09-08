@@ -121,6 +121,8 @@ app.post('/update', function(req, res){
 		state[host.name].RX.max = Math.max(state[host.name].RX.max,req.body.RX)
 
 		// update the remaining
+		// TODO: this all explicitly so this is not necessary:
+		delete req.body.fqdn
 		for (var attr in req.body)
 			state[host.name][attr].value = update[host.name][attr] = req.body[attr]
 		
