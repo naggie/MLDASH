@@ -111,6 +111,8 @@ app.post('/update', function(req, res){
 	getFqdn(req,function(err,host) {
 		if (err) return res.json(404,{error:"Could not find DNS hostname"})
 
+		var update = {}
+
 		updated[host.name] = new Date()
 
 		// set new max values for RX and TX, and value
