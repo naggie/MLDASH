@@ -56,7 +56,8 @@ while True:
 				# uptime in days
 				"Uptime": int(sysinfo.uptime()/84600),
 				# 0-100 CPU load 
-				"Load": sysinfo.load() 
+				"Load": sysinfo.load(),
+				"fqdn" : getfqdn(),
 			})
 
 			if req.status_code != requests.codes.ok:

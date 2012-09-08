@@ -43,23 +43,19 @@ app.post('/init', function(req, res) {
 		delete req.body.key
 
 	var ip = req.connection.remoteAddress
+	// remove cached DNS name
+	delete fqdns[ip]
 
-	getFqdn(req,function(err,fqdn) {
+	getFqdn(req,function(err,host) {
 		if (err) return res.json(404,{error:"Could not find DNS hostname"})
 
-		var parts = fqdn.split('.')
-		var host = parts.shift() || null
-		var domain = parts.join('.') || null
-
-		fqdns[ip] = [host,domain,fqdn]
-
 		// replace with something clever FIXME TODO
-		if (domain) {
+		if (host.domain) {
 			title = domain
 			io.sockets.emit('title',title)
 		}
 
-		state[host] = {
+		state[host.name] = {
 			Uptime : {
 				units : ' days'
 			},
@@ -95,13 +91,12 @@ app.post('/init', function(req, res) {
 			}
 		}
 
-		io.sockets.emit('refresh',state,host+' connected')
+		io.sockets.emit('refresh',state,host.name+' connected')
 
 		res.json({
 			success  : "Initialised server to pool",
-			hostname : host,
-			domain   : domain,
-			ip : ip
+			hostname : host.name;
+			domain   : host.domain,
 		})
 	})
 })
@@ -113,28 +108,27 @@ app.post('/update', function(req, res){
 	else
 		delete req.body.key
 
-	var ip = req.connection.remoteAddress
-	var host = fqdns[ip][0]
-	var update = {}
-	update[host] = {}
+	getFqdn(req,function(err,host) {
+		if (err) return res.json(404,{error:"Could not find DNS hostname"})
 
-	updated[host] = new Date()
+		updated[host] = new Date()
 
-	// set new max values for RX and TX, and value
-	state[host].TX.max = Math.max(state[host].TX.max,req.body.TX)
-	state[host].RX.max = Math.max(state[host].RX.max,req.body.RX)
+		// set new max values for RX and TX, and value
+		state[host].TX.max = Math.max(state[host].TX.max,req.body.TX)
+		state[host].RX.max = Math.max(state[host].RX.max,req.body.RX)
 
-	// update the remaining
-	for (var attr in req.body)
-		state[host][attr].value = update[host][attr] = req.body[attr]
-	
-	// send new max values perhapswhynot
-	// as long-hand update. Make it conditional later.
-	update[host].TX = state[host].TX
-	update[host].RX = state[host].RX
+		// update the remaining
+		for (var attr in req.body)
+			state[host][attr].value = update[host][attr] = req.body[attr]
+		
+		// send new max values perhapswhynot
+		// as long-hand update. Make it conditional later.
+		update[host].TX = state[host].TX
+		update[host].RX = state[host].RX
 
-	io.sockets.emit('update',update)
-	res.json({success:'Updated'})
+		io.sockets.emit('update',update)
+		res.json({success:'Updated'})
+	})
 })
 
 app.use(express.static(__dirname + '/www'))
@@ -158,8 +152,13 @@ io.sockets.on('connection',function (socket) {
 
 
 // given a HTTP request object, callback with host, domain and fqdn
+// uses DNS, falls back to relying on the client if not found
 function getFqdn(req,cb) {
 	var ip = req.connection.remoteAddress
+
+	// cached?
+	if (fqdns[ip])
+		return fqdns[ip]
 
 	dns.reverse(ip,function(err,domains){
 		if (err) return cb(err)	
@@ -170,7 +169,16 @@ function getFqdn(req,cb) {
 		else if (domains.length == 0)
 			return cb(true)	
 
-		cb(null,domains[0])
+		var parts = domains.split('.')
+
+		var host = {
+			host : parts.shift() || null,
+			domain : parts.join('.') || null,
+			fqdn : domains[0],
+		}
+
+		// cache
+		fqdns[ip] = host
 	})
 }
 
