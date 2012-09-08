@@ -7,6 +7,7 @@ import copy
 import os
 import sysinfo
 from socket import getfqdn 
+import sys
 
 #server = 'http://snorlax/'
 #server = 'http://localhost/'
@@ -70,9 +71,13 @@ while True:
 	except (requests.HTTPError,requests.ConnectionError, requests.Timeout) as e:
 		print
 		print e
-	finally:
 		print
 		print "Reconnecting in 4 seconds..."
 		print
 		time.sleep(4)
 
+	except (Exception) as e:
+		print
+		print e
+		print
+		sys.exit(1)
