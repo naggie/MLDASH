@@ -111,20 +111,20 @@ app.post('/update', function(req, res){
 	getFqdn(req,function(err,host) {
 		if (err) return res.json(404,{error:"Could not find DNS hostname"})
 
-		updated[host] = new Date()
+		updated[host.name] = new Date()
 
 		// set new max values for RX and TX, and value
-		state[host].TX.max = Math.max(state[host].TX.max,req.body.TX)
-		state[host].RX.max = Math.max(state[host].RX.max,req.body.RX)
+		state[host.name].TX.max = Math.max(state[host.name].TX.max,req.body.TX)
+		state[host.name].RX.max = Math.max(state[host.name].RX.max,req.body.RX)
 
 		// update the remaining
 		for (var attr in req.body)
-			state[host][attr].value = update[host][attr] = req.body[attr]
+			state[host.name][attr].value = update[host.name][attr] = req.body[attr]
 		
 		// send new max values perhapswhynot
 		// as long-hand update. Make it conditional later.
-		update[host].TX = state[host].TX
-		update[host].RX = state[host].RX
+		update[host.name].TX = state[host.name].TX
+		update[host.name].RX = state[host.name].RX
 
 		io.sockets.emit('update',update)
 		res.json({success:'Updated'})
