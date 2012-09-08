@@ -158,7 +158,7 @@ function getFqdn(req,cb) {
 
 	// cached?
 	if (fqdns[ip])
-		return fqdns[ip]
+		return cb(null,fqdns[ip])
 
 	dns.reverse(ip,function(err,domains){
 		if (err) return cb(err)	
@@ -179,6 +179,8 @@ function getFqdn(req,cb) {
 
 		// cache
 		fqdns[ip] = host
+
+		cb(null,host)
 	})
 }
 
