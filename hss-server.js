@@ -112,6 +112,7 @@ app.post('/update', function(req, res){
 		if (err) return res.json(404,{error:"Could not find DNS hostname"})
 
 		var update = {}
+		update[host.name] = {}
 
 		updated[host.name] = new Date()
 
