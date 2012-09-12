@@ -124,7 +124,8 @@ app.post('/update', function(req, res){
 		// update the remaining
 		// TODO: this all explicitly
 		for (var attr in req.body)
-			state[host.name][attr].value = update[host.name][attr] = req.body[attr]
+			if (state[host.name][attr])
+				state[host.name][attr].value = update[host.name][attr] = req.body[attr]
 		
 		// send new max values perhapswhynot
 		// as long-hand update. Make it conditional later.
