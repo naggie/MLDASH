@@ -6,7 +6,6 @@ import datetime
 import copy
 import os
 import sysinfo
-from socket import getfqdn 
 import sys
 
 #server = 'http://snorlax/'
@@ -31,7 +30,6 @@ while True:
 			"Memory" : int(sysinfo.memory()["total"]/1024),
 			# total storage capacity in GB
 			"Storage" : int(sysinfo.storage()["total"]/1048576),
-			"fqdn" : getfqdn(),
 		},"init")
 
 		print req.text
@@ -58,7 +56,6 @@ while True:
 				"Uptime": int(sysinfo.uptime()/84600),
 				# 0-100 CPU load 
 				"Load": sysinfo.load(),
-				"fqdn" : getfqdn(),
 			})
 
 			if req.status_code != requests.codes.ok:
