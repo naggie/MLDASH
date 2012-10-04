@@ -17,7 +17,7 @@ var io = require('socket.io').listen(server)
 var dns = require('dns')
 var os = require('os')
 
-server.listen( process.env.PORT||80 )
+server.listen(process.env.PORT||80,process.env.IP)
 
 // state to be synchronised with the client
 var state = {}
