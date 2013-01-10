@@ -1,4 +1,4 @@
-# TODO: non-indo handling (eg, can't get data) 
+#! /usr/bin/python
 
 import requests
 import time
