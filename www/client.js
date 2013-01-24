@@ -40,6 +40,7 @@ $(function(){
 	$('#splash').show().text('Connecting...')
 	socket.on('refresh',ml.refresh)
 	socket.on('update',ml.update)
+	socket.on('splash',ml.splash)
 
 	socket.on('title',function(title) {
 		$('#title').text(title)
@@ -59,7 +60,7 @@ $(function(){
 			// not updated for a while, so blank
 			if (updated < min)
 				$('td',this).empty()
-		})	
+		})
 	},dormant/2)
 
 	alarm.init()
@@ -71,19 +72,10 @@ ml.refresh = function(state,reason) {
 	var context = $('#stats').empty()
 
 	if (!Object.keys(state).length)
-		return $('#splash').show().text('No servers online')
-	
-	if (typeof reason != 'undefined') {
-		$('#splash').show().text(reason)
+		return $('#splash').show().text('No data available')
 
-		ping.play()
-		ping.currentTime = 0
-
-		clearTimeout(splashTimeout)
-		splashTimeout = setTimeout(function(){
-			$('#splash').hide()
-		},2000)
-	}
+	if (typeof reason != 'undefined')
+		ml.splash(reason)
 
 	state = ml.normalise(state)
 
@@ -91,6 +83,18 @@ ml.refresh = function(state,reason) {
 		ml.addGroup(ob,state[ob],context)
 
 	ml.sort()
+}
+
+ml.splash = function(message) {
+	$('#splash').show().text(message)
+
+	ping.play()
+	ping.currentTime = 0
+
+	clearTimeout(splashTimeout)
+	splashTimeout = setTimeout(function() {
+		$('#splash').hide()
+	},2000)
 }
 
 // update the DOM with the new delta-state, where anything can be omitted
@@ -175,9 +179,9 @@ ml.updateAttribute = function(attr){
 
 		// out of range condition (setting alarm class will also trigger alarm noise)
 		// HACK -- same as previous use of Number()
-		if (attr.alarm 
-			&& attr.value == Number(attr.value) 
-			&& (attr.value > attr.max 
+		if (attr.alarm
+			&& attr.value == Number(attr.value)
+			&& (attr.value > attr.max
 			|| attr.value < attr.min)
 		){
 			$(tr).addClass('alarm')
