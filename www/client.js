@@ -17,8 +17,6 @@ var socket = io.connect(undefined,{
 
 var ml = {}
 
-// timeout for message, used to clear
-var splashTimeout
 
 // nice noise
 var ping = document.createElement('audio')
@@ -74,17 +72,20 @@ ml.refresh = function(state,reason) {
 	if (!Object.keys(state).length)
 		return $('#splash').show().text('No data available')
 
-	if (typeof reason != 'undefined')
-		ml.splash(reason)
-
 	state = ml.normalise(state)
 
 	for (var ob in state)
 		ml.addGroup(ob,state[ob],context)
 
+	if (typeof reason != 'undefined')
+		ml.splash(reason)
+
 	ml.sort()
 }
 
+// timeout for message, used to clear
+var splashTimeout
+// make a splash message with a timeout that is active only if there is data
 ml.splash = function(message) {
 	$('#splash').show().text(message)
 
@@ -92,6 +93,10 @@ ml.splash = function(message) {
 	ping.currentTime = 0
 
 	clearTimeout(splashTimeout)
+
+	if ($('#stats .group').length == 0)
+		return // no timeout needed, no data
+
 	splashTimeout = setTimeout(function() {
 		$('#splash').hide()
 	},2000)
