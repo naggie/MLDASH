@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // Listens for hss-reporter clients
 
 // TODO: exceptions

@@ -1,0 +1,35 @@
+{
+  "name": "MLDASH",
+  "homepage": "https://github.com/naggie/MLDASH",
+  "description": "Server monitoring",
+  "keywords": [
+  ],
+  "version": "0.0.1",
+  "author": "Callan Bryant <callan.bryant@gmail.com> (http://callanbryant.co.uk/)",
+  "scripts": {
+    "start": "node server"
+  },
+  "dependencies": {
+    "socket.io": "0.9.16",
+    "express":"3.4.8"
+  },
+  "devDependencies": {
+  },
+  "bugs": {
+    "url": "https://github.com/naggie/MLDASH/issues"
+  },
+  "license": "Apache",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/naggie/MLDASH.git"
+  },
+  "bin": {
+    "mldash-server": "./server.js",
+    "mldash-reporter": "./reporter.py"
+  },
+  "preferGlobal": true,
+  "engines": {
+    "node": ">=0.8"
+  },
+  "private" : true
+}
