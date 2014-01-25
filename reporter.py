@@ -251,4 +251,6 @@ while True:
 		print
 		print e
 		print
-		sys.exit(1)
+		# Try forever
+		time.sleep(1)
+		#sys.exit(1)
