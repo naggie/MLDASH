@@ -16,19 +16,39 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 import requests
 import time
 import datetime
 import copy
 import os
 import sys
+import re
+
+if len(sys.argv) == 1:
+	print "Usage %s <mldash server URL> [API key]" % sys.argv[0]
+	sys.exit(0)
+else:
+	server = sys.argv[1]
+
+# one slash on the end of url
+server = re.sub(r'/+$','/',server+'/')
+# protocol must be at beginning
+if not re.match(r'https?://',server):
+	server = 'http://%s' % server
 
 #server = 'http://snorlax/'
 #server = 'http://localhost/'
-server = 'http://status/'
+#server = 'http://status/'
 
-key    = 'banana'
+if len(sys.argv) == 3:
+	key = sys.argv[2]
+else:
+	key    = 'banana'
 
+print server
+print key
+sys.exit(0)
 # provides methods to get stats about the local machine.
 
 import multiprocessing
@@ -203,9 +223,6 @@ def temperature():
 		temps[i] = int(temps[i])
 
 	return max(temps)
-
-def look_for_network_dev:
-	return 'eth0'
 
 def update(payload,mode="update"):
 	"""Updates the server, initial or update depending on mode"""
