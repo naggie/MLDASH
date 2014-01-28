@@ -19,7 +19,10 @@
 // TODO: exceptions
 // TODO: rdns fail handling
 
-var key = 'banana'
+var key = process.env.KEY || process.argv[2] || 'banana'
+console.log('API key is:',key)
+console.log('Specify as argument or KEY environment variable to change')
+console.log('IP and PORT can also be specified by env vars.')
 
 // shared domain name for servers, or false if servers
 // no not have a common domain name

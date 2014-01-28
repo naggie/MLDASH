@@ -46,14 +46,10 @@ if len(sys.argv) == 3:
 else:
 	key    = 'banana'
 
-print server
-print key
-sys.exit(0)
 # provides methods to get stats about the local machine.
 
 import multiprocessing
 import commands
-import re
 from os import path
 
 def memory():
