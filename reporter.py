@@ -37,6 +37,8 @@ server = re.sub(r'/+$','/',server+'/')
 if not re.match(r'https?://',server):
 	server = 'http://%s' % server
 
+print 'Connecting to %s...' % server
+
 #server = 'http://snorlax/'
 #server = 'http://localhost/'
 #server = 'http://status/'
