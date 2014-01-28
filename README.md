@@ -4,6 +4,7 @@ collection of servers to a web interface.
 MLDASH can also support arbitrary data; it has been used as a telemetry system
 for an electric vehicle and for a scalable battery management system.
 
+![MLDASH in action circa 2011](screenshot.png)
 
 # Server
 
