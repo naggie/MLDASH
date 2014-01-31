@@ -15,6 +15,9 @@ NPM may require `sudo`, depending on your configuration. Alternatively, you can
 run `node server <api key>` after `npm install` on this repository. Environment
 variables `PORT`, `IP` and `KEY` can be set to suit your setup.
 
+Note that the server is very small. Most of the logic is in the client; as
+such, this makes it easy to aggregate and display arbitrary data.
+
 
 # Client
 
@@ -55,3 +58,8 @@ The client expects the following:
 
 ```
 
+Here is MLDASH being used as a telemetry system for an electric racing car. A
+serial to JSON protocol bridge was developed in C++ together with a custom
+server in nodejs.
+
+![MLDASH as a telemetry system](telemetry.jpg)
