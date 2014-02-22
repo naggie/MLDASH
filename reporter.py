@@ -285,6 +285,8 @@ while True:
 		print
 		print e
 		print
-		# Try forever
-		time.sleep(1)
-		#sys.exit(1)
+		# Try forever by starting new process. Might be dangerous, bit of a memory leak.
+		#python = sys.executable
+		#os.execl(python, python, * sys.argv)
+		#time.sleep(10)
+		sys.exit(1) # might want to pick this up with a watch command
