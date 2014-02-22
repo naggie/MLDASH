@@ -149,7 +149,7 @@ class traffic:
                 self.rx_file = "/sys/class/net/%s/statistics/rx_bytes" % dev
 
                 if not path.exists(self.tx_file):
-                        raise Exception("Could not find stats files for %s" % dev)
+                        raise Exception("Could not find stats files for %s. Specify network device name with MLDASH_NET_DEV (without /dev/)" % dev)
 
 		last_time = time.time()
                 self.update()
@@ -230,7 +230,7 @@ def update(payload,mode="update"):
 
 while True:
 	try:
-		traffic = traffic(os.getenv('NDEV') or 'eth0')
+		traffic = traffic(os.getenv('MLDASH_NET_DEV') or 'eth0')
 
 		# send some limits to define this platform
 		req = update({
