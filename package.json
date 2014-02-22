@@ -26,7 +26,7 @@
   },
   "bin": {
     "mldash-server": "./server.js",
-    "mldash-reporter": "./reporter.py"
+    "mldash-reporter": "report-wrapper.sh"
   },
   "preferGlobal": true,
   "engines": {

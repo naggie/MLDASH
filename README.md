@@ -37,6 +37,12 @@ The client expects the following:
 
     ./reporter.py <server URL> <key>
 
+There is currently a bug which causes the reporter to crash. There is a simple
+wrapper script that will re-launch it if this happens:
+
+    ./reporter-wrapper.sh <server URL> <key>
+
+The wrapper is automatically called by the global `mldash-reporter`.
 
 # Example usage:
 
@@ -48,7 +54,7 @@ The client expects the following:
 	node server banana
 
 	# ...in another terminal
-	./reporter.py http://localhost:8000 banana
+	./reporter-wrapper.sh http://localhost:8000 banana
 
 	# open your browser
 	open http://localhost:8000

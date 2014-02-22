@@ -27,7 +27,7 @@ import re
 
 if len(sys.argv) == 1:
 	print "Usage %s <mldash server URL> [API key]" % sys.argv[0]
-	sys.exit(0)
+	sys.exit(22)
 else:
 	server = sys.argv[1]
 
